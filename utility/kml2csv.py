@@ -7,9 +7,6 @@ import os, sys
 import pandas as pd
 
 def main():
-    """
-    Open the KML. Read the KML. Open a CSV file. Process a coordinate string to be a CSV row.
-    """
     assert len(sys.argv) == 2, "Please provide the path to the KML file to be converted to CSV"
     kml_file_path = sys.argv[1]
     if not os.path.exists(kml_file_path) or not os.path.isfile(kml_file_path) or not os.path.splitext(kml_file_path)[1] == '.kml':
