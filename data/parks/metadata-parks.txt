@@ -1,0 +1,37 @@
+# Metadata for Parks
+---
+Identifier: 'f3005537-b958-479c-9ba9-d2adffeb9c73'
+Name: 'parks'
+Title: 'Parks'
+Description: 'To locate parks in Singapore'
+Topics:
+  - 'Infrastructure'
+Keywords:
+  - 'National Parks'
+  - 'NationalParks'
+  - 'onemap'
+  - 'themes'
+Publisher:
+  Name: 'National Parks Board'
+  Admin 1:
+    Name: 'Margaret Cheong'
+    Department: 'NATIONAL PARKS BOARD'
+    Email: 'margaret_cheong@nparks.gov.sg'
+Sources:
+  - 'National Parks Board'
+License: 'https://data.gov.sg/open-data-licence'
+Frequency: 'Ad-hoc'
+Last Updated: '2020-05-01T00:02:34.225084'
+Resources:
+  -
+    Identifier: '507ec5a8-ecc2-4fb7-bbc9-0374c523e10e'
+    Title: 'Parks (KML)'
+    Url: 'https://geo.data.gov.sg/nationalparks/2020/04/24/kml/nationalparks.kml'
+    Format: 'KML'
+    Last Updated: '2020-04-23T16:00:00'
+  -
+    Identifier: '579a406c-f1bb-44da-afb7-45d8c1e4465f'
+    Title: 'Parks (GEOJSON)'
+    Url: 'https://geo.data.gov.sg/nationalparks/2020/04/24/geojson/nationalparks.geojson'
+    Format: 'GeoJSON'
+    Last Updated: '2020-04-23T16:00:00'
