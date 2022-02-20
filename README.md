@@ -11,7 +11,7 @@
 
 ### Package Management
 
-To install packages in `pipenv` environment
+To add new packages to the `pipenv` environment
 ```
 pipenv install <package-name>
 ```
