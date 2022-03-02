@@ -40,6 +40,8 @@ pip install psycopg2
 ```
 
 ### Run script
+This script creates tables if not exists and copy data from /data to tables.
+You can run as many times as possible as the script will clear the database tables before pushing the data.
 ```
 python postgresql_setup.py
 ```
