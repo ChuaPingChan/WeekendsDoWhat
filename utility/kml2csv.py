@@ -29,7 +29,7 @@ def main():
             data.append(entry_dict)
 
         df = pd.DataFrame(data)
-        df.to_csv(f'{file_basename}.csv')
+        df.to_csv(f'{file_basename}.csv', sep="|")
 
 if __name__ == "__main__":
     main()

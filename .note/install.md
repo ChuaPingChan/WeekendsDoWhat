@@ -1,0 +1,47 @@
+# PostgreSQL
+
+Guide: 
+- https://www.prisma.io/dataguide/postgresql
+- https://www.sqlshack.com/setting-up-a-postgresql-database-on-mac/
+
+UI: https://www.pgadmin.org/
+
+## Installation (for Mac)
+```
+brew install postgresql
+brew services start postgresql
+```
+
+## Create database and user
+```
+# Start service
+brew services start postgresql
+
+# Create database 
+$ createdb postgres
+
+# Login to database
+$ psql postgres
+
+[Optional]
+# Create user `postgres`
+CREATE ROLE postgres WITH LOGIN PASSWORD 'password';
+
+# Login using new user's credentials
+/q
+psql postgres -U postgres
+```
+
+## Using Python to create table and push data 
+
+### Install psycopg2 library via pip
+```
+pip install psycopg2
+```
+
+### Run script
+This script creates tables if not exists and copy data from /data to tables.
+You can run as many times as possible as the script will clear the database tables before pushing the data.
+```
+python postgresql_setup.py
+```
