@@ -1,8 +1,9 @@
 import psycopg2
 import csv
+import os
 
 # Connect to database
-conn = psycopg2.connect("host=localhost dbname=postgres user=postgres")
+conn = psycopg2.connect(f"host=localhost port=5432 dbname=WeekendsDoWhat user=postgres password={os.environ['postgres_pwd']}")
 # Creating a cursor object using the cursor()
 cur = conn.cursor()
 
@@ -48,12 +49,12 @@ cur.execute("""
     DELETE FROM parks
 """)
 
-with open('data/eating-establishments/eating-establishments-processed.csv', 'r') as f:
+with open(f'{os.path.abspath(os.path.dirname(__file__))}/../data/eating-establishments/eating-establishments-processed.csv', 'r') as f:
     # Notice that we don't need the `csv` module.
     next(f) # Skip the header row.
     cur.copy_from(f, 'eating_establishments', sep='|')
 
-with open('data/parks/parks-kml-processed.csv', 'r') as f:
+with open('os.path.dirname(__file__))}/../data/parks/parks-kml-processed.csv', 'r') as f:
     # Notice that we don't need the `csv` module.
     next(f) # Skip the header row.
     cur.copy_from(f, 'parks', sep='|')
