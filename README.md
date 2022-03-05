@@ -4,7 +4,7 @@
     ```
     pipenv shell
     ```
-1. Create a PostgreSQL database and populate it following the steps in docs/db-setup.md.
+1. Create a PostgreSQL database and populate it following the steps in [docs/db-setup.md](docs/db-setup.md).
 1. Set the following environment variables in your shell:
    ```
    ENV=dev
@@ -14,7 +14,7 @@
     ```
     python app.py
     ```
-1. Run the frontend following docs/frontend.md.
+1. Run the frontend following [docs/frontend.md](docs/frontend.md).
 
 ### Package Management
 
