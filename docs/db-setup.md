@@ -11,6 +11,11 @@ UI: https://www.pgadmin.org/
 brew install postgresql
 brew services start postgresql
 ```
+## Installation (for Windows)
+Download the latest version installer. Name database as WeekendsDoWhat.
+Link for reference: https://phoenixnap.com/kb/install-postgresql-windows
+For psql command to work, need to add PATH of PostgreSQL to system settings.
+
 
 ## Create database and user
 ```
@@ -43,5 +48,5 @@ pip install psycopg2
 This script creates tables if not exists and copy data from /data to tables.
 You can run as many times as possible as the script will clear the database tables before pushing the data.
 ```
-python postgresql_setup.py
+python ./utility/postgresql_setup.py
 ```

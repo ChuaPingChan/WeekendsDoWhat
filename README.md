@@ -1,4 +1,7 @@
 ### Environment Setup
+(If Windows, need to add PATH of pipenv to system settings.
+https://www.architectryan.com/2018/08/31/how-to-change-environment-variables-on-windows-10/  
+Pipfile using Python 3.9)
 
 1. Activate virtual environment
     ```
