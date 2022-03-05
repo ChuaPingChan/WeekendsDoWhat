@@ -13,9 +13,10 @@ Pipfile using Python 3.9)
    ENV=dev
    postgres_pwd=<YourPostgresDbPassword>
    ```
+    (If flask not installed, run 'pip install flask' and 'pip install flask_sqlalchemy)
 1. Run the Flask backend
     ```
-    python app.py
+    python ./Backend/app.py
     ```
 1. Run the frontend following [docs/frontend.md](docs/frontend.md).
 

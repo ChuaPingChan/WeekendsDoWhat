@@ -12,8 +12,8 @@ brew install postgresql
 brew services start postgresql
 ```
 ## Installation (for Windows)
-Download the latest version installer. Name database as WeekendsDoWhat.
-Link for reference: https://phoenixnap.com/kb/install-postgresql-windows
+Download the latest version installer. Name database as WeekendsDoWhat.  
+Link for reference: https://phoenixnap.com/kb/install-postgresql-windows  
 For psql command to work, need to add PATH of PostgreSQL to system settings.
 
 
