@@ -1,6 +1,10 @@
 ### Environment Setup
 1. Install Python 3.9
     - On Windows, check the option to enable Python to be added to the PATH environment variable during installation. Otherwise, [add the path of Python to the PATH environment variable manually](https://www.architectryan.com/2018/08/31/how-to-change-environment-variables-on-windows-10/).
+1. Install `pipenv`
+    ```
+    pip install pipenv
+    ```
 1. Start a shell in this project's root directory to run the backend
     1. Activate virtual environment
     ```
