@@ -39,10 +39,6 @@ psql WeekendsDoWhat -U postgres
 
 ## Using Python to create table and push data 
 
-### Install psycopg2 library via pip
-```
-pip install psycopg2
-```
 
 ### Run script
 This script creates tables if not exists and copy data from /data to tables.
