@@ -6,14 +6,16 @@ Guide:
 
 UI: https://www.pgadmin.org/
 
-## Installation (for Mac)
+## Installation
+
+For Mac:
 ```
 brew install postgresql
 brew services start postgresql
 ```
-## Installation (for Windows)
-Download the latest version installer. Name database as WeekendsDoWhat.  
-Link for reference: https://phoenixnap.com/kb/install-postgresql-windows  
+
+For Windows:
+Download PostgreSQL. Link for reference: https://phoenixnap.com/kb/install-postgresql-windows  
 For psql command to work, need to add PATH of PostgreSQL to system settings.
 
 
@@ -22,7 +24,7 @@ For psql command to work, need to add PATH of PostgreSQL to system settings.
 # Start service
 brew services start postgresql
 
-# Create database 
+# Create database with the name WeekendsDoWhat
 $ createdb WeekendsDoWhat
 
 # Login to database
@@ -38,9 +40,6 @@ psql WeekendsDoWhat -U postgres
 ```
 
 ## Using Python to create table and push data 
-
-
-### Run script
 This script creates tables if not exists and copy data from /data to tables.
 You can run as many times as possible as the script will clear the database tables before pushing the data.
 ```
