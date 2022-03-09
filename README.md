@@ -1,6 +1,13 @@
 ### Environment Setup
 1. Install Python 3.9
     - On Windows, check the option to enable Python to be added to the PATH environment variable during installation. Otherwise, [add the path of Python to the PATH environment variable manually](https://www.architectryan.com/2018/08/31/how-to-change-environment-variables-on-windows-10/).
+1. Create an python environment using Conda [Optional]
+
+    ```
+    conda create --name cloud python=3.9.7
+    conda activate cloud
+    ```
+
 1. Install packages
     ```
     pip install flask psycopg2-binary psycopg2 flask-sqlalchemy
