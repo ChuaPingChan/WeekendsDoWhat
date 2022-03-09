@@ -23,10 +23,10 @@ For psql command to work, need to add PATH of PostgreSQL to system settings.
 brew services start postgresql
 
 # Create database 
-$ createdb postgres
+$ createdb WeekendsDoWhat
 
 # Login to database
-$ psql postgres
+$ psql WeekendsDoWhat
 
 [Optional]
 # Create user `postgres`
@@ -34,7 +34,7 @@ CREATE ROLE postgres WITH LOGIN PASSWORD 'password';
 
 # Login using new user's credentials
 /q
-psql postgres -U postgres
+psql WeekendsDoWhat -U postgres
 ```
 
 ## Using Python to create table and push data 

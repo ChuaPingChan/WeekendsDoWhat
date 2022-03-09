@@ -49,12 +49,14 @@ cur.execute("""
     DELETE FROM parks
 """)
 
-with open(f'{os.path.abspath(os.path.dirname(__file__))}/../data/eating-establishments/eating-establishments-processed.csv', 'r') as f:
+print(f'{os.path.dirname(os.path.abspath(os.path.dirname(__file__)))}/data/eating-establishments/eating-establishments-processed.csv')
+
+with open(f'{os.path.dirname(os.path.abspath(os.path.dirname(__file__)))}/data/eating-establishments/eating-establishments-processed.csv', 'r') as f:
     # Notice that we don't need the `csv` module.
     next(f) # Skip the header row.
     cur.copy_from(f, 'eating_establishments', sep='|')
 
-with open('os.path.dirname(__file__))}/../data/parks/parks-kml-processed.csv', 'r') as f:
+with open(f'{os.path.dirname(os.path.abspath(os.path.dirname(__file__)))}/data/parks/parks-kml-processed.csv', 'r') as f:
     # Notice that we don't need the `csv` module.
     next(f) # Skip the header row.
     cur.copy_from(f, 'parks', sep='|')
