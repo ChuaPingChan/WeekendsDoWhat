@@ -14,7 +14,7 @@ if os.environ['ENV'] == 'development':
     app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://postgres:{os.environ['postgres_pwd']}@localhost/WeekendsDoWhat"
 else:
     pass    # TODO: Connect to production database
-    app.config['SQLALCHEMY_DATABASE_URI'] = ''
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://aoganqgblrifsa:9a12fa516c3d4002d773d7644617d4b6f92b7f4158c687ce3fe9778feffef5a7@ec2-52-207-74-100.compute-1.amazonaws.com:5432/d49oheo6egq1a2'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Just to avoid warnings
 db = SQLAlchemy(app)
