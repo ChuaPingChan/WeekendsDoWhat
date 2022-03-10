@@ -7,8 +7,7 @@ conn = None
 if 'env' in os.environ and os.environ['ENV'] == 'heroku':
     conn = psycopg2.connect(f"host=localhost port=5432 dbname=WeekendsDoWhat user=postgres password={os.environ['postgres_pwd']}")
 else:
-    conn = psycopg2.connect(f"host=ec2-52-207-74-100.compute-1.amazonaws.com
- port=5432 dbname=d49oheo6egq1a2 user=aoganqgblrifsa password=9a12fa516c3d4002d773d7644617d4b6f92b7f4158c687ce3fe9778feffef5a7")
+    conn = psycopg2.connect(r"host=ec2-52-207-74-100.compute-1.amazonaws.com port=5432 dbname=d49oheo6egq1a2 user=aoganqgblrifsa password=9a12fa516c3d4002d773d7644617d4b6f92b7f4158c687ce3fe9778feffef5a7")
 # Creating a cursor object using the cursor()
 cur = conn.cursor()
 
