@@ -4,10 +4,10 @@ import os
 
 # Connect to database
 conn = None
-if 'env' in os.environ and os.environ['ENV'] == 'heroku':
-    conn = psycopg2.connect(f"host=localhost port=5432 dbname=WeekendsDoWhat user=postgres password={os.environ['postgres_pwd']}")
-else:
+if 'ENV' in os.environ and os.environ['ENV'] == 'heroku':
     conn = psycopg2.connect(r"host=ec2-52-207-74-100.compute-1.amazonaws.com port=5432 dbname=d49oheo6egq1a2 user=aoganqgblrifsa password=9a12fa516c3d4002d773d7644617d4b6f92b7f4158c687ce3fe9778feffef5a7")
+else:
+    conn = psycopg2.connect(f"host=localhost port=5432 dbname=WeekendsDoWhat user=postgres password={os.environ['postgres_pwd']}")
 # Creating a cursor object using the cursor()
 cur = conn.cursor()
 
@@ -53,8 +53,7 @@ cur.execute("""
     DELETE FROM parks
 """)
 
-print(f"Environment variables: {os.environ['ENV']}")
-if 'env' in os.environ and os.environ['ENV'] == 'heroku':
+if 'ENV' in os.environ and os.environ['ENV'] == 'heroku':
     with open(f'{os.path.dirname(os.path.abspath(os.path.dirname(__file__)))}/data/eating-establishments/eating-establishments-processed-heroku.csv', 'r') as f:
         # Notice that we don't need the `csv` module.
         next(f) # Skip the header row.
