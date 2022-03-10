@@ -53,8 +53,7 @@ cur.execute("""
     DELETE FROM parks
 """)
 
-print(f'{os.path.dirname(os.path.abspath(os.path.dirname(__file__)))}/data/eating-establishments/eating-establishments-processed.csv')
-
+print(f"Environment variables: {os.environ['ENV']}")
 if 'env' in os.environ and os.environ['ENV'] == 'heroku':
     with open(f'{os.path.dirname(os.path.abspath(os.path.dirname(__file__)))}/data/eating-establishments/eating-establishments-processed-heroku.csv', 'r') as f:
         # Notice that we don't need the `csv` module.
