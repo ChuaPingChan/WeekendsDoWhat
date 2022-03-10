@@ -10,8 +10,6 @@ app = Flask(__name__)
 
 # Connect to database, check out https://www.youtube.com/watch?v=w25ea_I89iM for details
 if os.environ['ENV'] == 'dev':
-    app.debug = True    # Useful for development
-
     # TODO: Update with true debug database credentials
     app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://postgres:{os.environ['postgres_pwd']}@localhost/WeekendsDoWhat"
 else:
@@ -58,21 +56,56 @@ def get_n_closest_parks(x_coord, y_coord, n=10):
 def index():
     return jsonify({ 'msg': 'Hello World' })
 
-@app.route('/getitinerary', methods=['POST'])
+@app.route('/getitinerary', methods=['GET'])
 def get_itinerary():
-    x_coord = float(request.json['x_coord'])
-    y_coord = float(request.json['y_coord'])
+    if 'location' not in request.args:
+        return 'Invalid POST request format'
 
-    return jsonify({
-        'itinerary 1': {
-            'activity 1': {
-                'name': 'COLD STORAGE SINGAPORE (1983) PTE LTD'
+    response = jsonify({
+        "itineraries": [
+            {
+                "activities": [
+                {
+                    "type": "food",
+                    "name": "COLD STORAGE",
+                    "address": "301 C, Block 3, TEMASEK BOULEVARD"
+                },
+                {
+                    "type": "park",
+                    "name": f'{get_n_closest_parks(31090, 40341, 1)[0]}',
+                    "address": "399 Bukit Gombak West Ave 6"
+                },
+                {
+                    "type": "food",
+                    "name": "THE SOUP SPOON",
+                    "address": "8 MARINA VIEW"
+                }
+                ]
             },
-            'activity 2': {
-                'name': f'{get_n_closest_parks(x_coord, y_coord, 1)[0]}'
+            {
+                "activities": [
+                {
+                    "type": "food",
+                    "name": "TAO SEAFOOD ASIA",
+                    "address": "12 MARINA VIEW"
+                },
+                {
+                    "type": "park",
+                    "name": "MacRitchie Reservoir Park",
+                    "address": "123 Lornie Road"
+                },
+                {
+                    "type": "food",
+                    "name": "THE SOUP SPOON",
+                    "address": "8 MARINA VIEW"
+                }
+                ]
             }
+            ]
         }
-    })
+    )
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 # Run server
 if __name__ == '__main__':
