@@ -36,14 +36,71 @@ const locations = [
     restaurant: "Old Chang Kee",
   },
 ];
+// const ITINERARIES = [
+//   {
+//     activities: [
+//       {
+//         type: "food",
+//         name: "COLD STORAGE",
+//         address: "301 C, Block 3, TEMASEK BOULEVARD",
+//       },
+//       {
+//         type: "park",
+//         name: "Lilac Drive Playground",
+//         address: "...",
+//       },
+//       {
+//         type: "food",
+//         name: "THE SOUP SPOON",
+//         address: "8 MARINA VIEW",
+//       },
+//     ],
+//   },
+//   {
+//     activities: [
+//       {
+//         type: "food",
+//         name: "TAO SEAFOOD ASIA",
+//         address: "12 MARINA VIEW",
+//       },
+//       {
+//         type: "park",
+//         name: "MacRitchie Reservoir Park",
+//         address: "123 Lornie Road",
+//       },
+//       {
+//         type: "food",
+//         name: "THE SOUP SPOON",
+//         address: "8 MARINA VIEW",
+//       },
+//     ],
+//   },
+// ];
 function App() {
   const [showList, setShowList] = useState(false);
   const inputLoc = useRef();
-  const [locationList, setLocationList] = useState(locations);
-  const showListHandler = () => {
+  const [locationList, setLocationList] = useState([]);
+  const showListHandler = async () => {
     const inputLocation = inputLoc.current.value;
+    const response = await fetch(
+      `http://192.168.1.204:5000/getitinerary2?location=${inputLocation}`
+    );
+    const responseData = await response.json();
+    const itineraries = responseData.itineraries.map((itin) => {
+      return {
+        id: Math.random(),
+        activities: itin.activities.map((activity) => {
+          return {
+            id: Math.random(),
+            type: activity.type,
+            name: activity.name,
+            address: activity.address,
+          };
+        }),
+      };
+    });
     setShowList(true);
-    setLocationList(locations.filter((loc) => inputLocation === loc.location));
+    setLocationList(itineraries);
   };
   return (
     <div className="App">
@@ -60,9 +117,22 @@ function App() {
               <ul>
                 <li>
                   <div>
-                    <h3>{loc.name}</h3>
+                    {/* <h3>{loc.name}</h3>
                     <div>{loc.restaurant}</div>
-                    <div>{loc.location}</div>
+                    <div>{loc.location}</div> */}
+                    {loc.activities.map((activity) => {
+                      return (
+                        <ul>
+                          <li>
+                            <div>
+                              <h3>{activity.type}</h3>
+                              <div>{activity.name}</div>
+                              <div>{activity.address}</div>
+                            </div>
+                          </li>
+                        </ul>
+                      );
+                    })}
                   </div>
                 </li>
               </ul>
