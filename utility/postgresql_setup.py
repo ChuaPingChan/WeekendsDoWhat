@@ -55,15 +55,26 @@ cur.execute("""
 
 print(f'{os.path.dirname(os.path.abspath(os.path.dirname(__file__)))}/data/eating-establishments/eating-establishments-processed.csv')
 
-with open(f'{os.path.dirname(os.path.abspath(os.path.dirname(__file__)))}/data/eating-establishments/eating-establishments-processed.csv', 'r') as f:
-    # Notice that we don't need the `csv` module.
-    next(f) # Skip the header row.
-    cur.copy_from(f, 'eating_establishments', sep='|')
+if 'env' in os.environ and os.environ['ENV'] == 'heroku':
+    with open(f'{os.path.dirname(os.path.abspath(os.path.dirname(__file__)))}/data/eating-establishments/eating-establishments-processed-heroku.csv', 'r') as f:
+        # Notice that we don't need the `csv` module.
+        next(f) # Skip the header row.
+        cur.copy_from(f, 'eating_establishments', sep='|')
 
-with open(f'{os.path.dirname(os.path.abspath(os.path.dirname(__file__)))}/data/parks/parks-kml-processed.csv', 'r') as f:
-    # Notice that we don't need the `csv` module.
-    next(f) # Skip the header row.
-    cur.copy_from(f, 'parks', sep='|')
+    with open(f'{os.path.dirname(os.path.abspath(os.path.dirname(__file__)))}/data/parks/parks-kml-processed-heroku.csv', 'r') as f:
+        # Notice that we don't need the `csv` module.
+        next(f) # Skip the header row.
+        cur.copy_from(f, 'parks', sep='|')
+else:
+    with open(f'{os.path.dirname(os.path.abspath(os.path.dirname(__file__)))}/data/eating-establishments/eating-establishments-processed.csv', 'r') as f:
+        # Notice that we don't need the `csv` module.
+        next(f) # Skip the header row.
+        cur.copy_from(f, 'eating_establishments', sep='|')
+
+    with open(f'{os.path.dirname(os.path.abspath(os.path.dirname(__file__)))}/data/parks/parks-kml-processed.csv', 'r') as f:
+        # Notice that we don't need the `csv` module.
+        next(f) # Skip the header row.
+        cur.copy_from(f, 'parks', sep='|')
 
 cur.execute("""
     SELECT COUNT(*) FROM eating_establishments
@@ -77,7 +88,7 @@ total_parks = cur.fetchall()
 
 # Commit your changes in the database
 conn.commit()
-  
+
 # Closing the connection
 conn.close()
 
