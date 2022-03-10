@@ -24,12 +24,12 @@
        ```
         # Windows CMD
         set FLASK_ENV=development
-        set FLASK_APP=Backend/server.py
+        set FLASK_APP=Backend/app.py
         set postgres_pwd=<YourPostgresDbPassword>
 
         # Mac
         export FLASK_ENV=development
-        export FLASK_APP=Backend/server.py
+        export FLASK_APP=Backend/app.py
         export postgres_pwd=<YourPostgresDbPassword>
         ```
     1. Create a PostgreSQL database and populate it following the steps in [docs/db-setup.md](docs/db-setup.md).
@@ -39,7 +39,7 @@
         ```
         or
         ```
-        python ./Backend/server.py
+        python ./Backend/app.py
         ```
 1. Start another shell in this project's root directory to run the frontend
     1. Change the current working directory to ./Frontend
