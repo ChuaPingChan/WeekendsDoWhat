@@ -13,7 +13,7 @@
         source venv/Scripts/activate
 
         # Windows CMD
-        venv/Scripts/activate
+        venv\Scripts\activate
         ```
 1. Install packages
     ```
