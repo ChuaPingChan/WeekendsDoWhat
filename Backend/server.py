@@ -9,7 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 
 # Connect to database, check out https://www.youtube.com/watch?v=w25ea_I89iM for details
-if os.environ['ENV'] == 'dev':
+if os.environ['ENV'] == 'development':
     # TODO: Update with true debug database credentials
     app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://postgres:{os.environ['postgres_pwd']}@localhost/WeekendsDoWhat"
 else:
