@@ -14,21 +14,16 @@ cur = conn.cursor()
 # Create tables 
 cur.execute("""
     CREATE TABLE IF NOT EXISTS eating_establishments(
-    id integer PRIMARY KEY,
-    unnamed text,
-    lic_name text,
-    blk_house text,
-    str_name text,
-    unit_no text,
-    postcode text,
-    lic_no text,
-    business_name text,
-    level_no text,
-    lic_iss_date text,
-    lic_exp_date text,
-    inc_crc text,
-    fmel_upd_d text
-)
+        inc_crc VARCHAR(255) PRIMARY KEY,
+        business_name VARCHAR(255),
+        latitude double precision,
+        longitude double precision,
+        lic_name VARCHAR(255),
+        str_name VARCHAR(255),
+        unit_no VARCHAR(255),
+        postcode integer,
+        level_no VARCHAR(255)
+    )
 """)
 
 cur.execute("""
@@ -37,16 +32,13 @@ cur.execute("""
 
 cur.execute("""
     CREATE TABLE IF NOT EXISTS parks(
-    id integer PRIMARY KEY,
-    unnamed text,
-    landxaddresspoint text,
-    landyaddresspoint text,
-    name text,
-    description text,
-    inc_crc text,
-    fmel_upd_d text,
-    hyperlink text
-)
+        inc_crc VARCHAR(255) PRIMARY KEY,
+        name VARCHAR(255),
+        latitude double precision,
+        longitude double precision,
+        description text,
+        hyperlink text
+    )
 """)
 
 cur.execute("""

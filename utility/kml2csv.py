@@ -8,8 +8,8 @@ import pandas as pd
 
 def main():
     kml_file_paths = [
-        f'{os.path.dirname(os.path.abspath(os.path.dirname(__file__)))}/data/parks/parks-kml.kml',
-        f'{os.path.dirname(os.path.abspath(os.path.dirname(__file__)))}/data/eating-establishments/eating-establishments.kml'
+        f'{os.path.dirname(os.path.abspath(os.path.dirname(__file__)))}/data/eating-establishments/eating-establishments.kml',
+        f'{os.path.dirname(os.path.abspath(os.path.dirname(__file__)))}/data/parks/parks-kml.kml'
     ]
     for kml_file_path in kml_file_paths:
         file_basename, file_extension = os.path.splitext(kml_file_path)
@@ -25,8 +25,22 @@ def main():
                 data.append(entry_dict)
 
             df = pd.DataFrame(data)
+
+            # Get latitude and longitude from KML
+            latitudes = []
+            longitudes = []
+            for coords_str in soup.find_all('coordinates'):
+                (lat, long, vert) = coords_str.text.split(',')
+                latitudes.append(lat)
+                longitudes.append(long)
+
+            assert len(latitudes) == df.shape[0]
+            assert len(longitudes) == df.shape[0]
+            df['LATITUDE'] = latitudes
+            df['LONGITUDE'] = longitudes
+
             # Delimit using '|' as some addresses contains commas
-            df.to_csv(f'{file_basename}.csv', sep="|")
+            df.to_csv(f'{file_basename}.csv', sep="|", index=False)
 
 def replace_newline_chars(s):
     # Some description fields have newline chars
