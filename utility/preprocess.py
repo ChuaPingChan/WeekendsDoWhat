@@ -3,6 +3,7 @@ import os
 
 def main():
     ##### Preprocess parks-kml.kml
+    # Delimit using '|' as some addresses contains commas
     df = pd.read_csv(os.path.join("../data/parks/parks-kml.csv"), sep="|")
 
     # Remove rows with null data of interests
