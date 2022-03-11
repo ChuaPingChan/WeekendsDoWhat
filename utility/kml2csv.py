@@ -30,7 +30,7 @@ def main():
             latitudes = []
             longitudes = []
             for coords_str in soup.find_all('coordinates'):
-                (lat, long, vert) = coords_str.text.split(',')
+                (long, lat, vert) = coords_str.text.split(',')
                 latitudes.append(lat)
                 longitudes.append(long)
 
