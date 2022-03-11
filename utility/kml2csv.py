@@ -3,32 +3,37 @@ Converts a KML file to CSV
 """
 
 from bs4 import BeautifulSoup
-import os, sys
+import os, sys, re
 import pandas as pd
 
 def main():
-    assert len(sys.argv) == 2, "Please provide the path to the KML file to be converted to CSV"
-    kml_file_path = sys.argv[1]
-    if not os.path.exists(kml_file_path) or not os.path.isfile(kml_file_path) or not os.path.splitext(kml_file_path)[1] == '.kml':
-        print(f"'{kml_file_path}' is not a valid KML file path")
-        return
+    kml_file_paths = [
+        f'{os.path.dirname(os.path.abspath(os.path.dirname(__file__)))}/data/parks/parks-kml.kml',
+        f'{os.path.dirname(os.path.abspath(os.path.dirname(__file__)))}/data/eating-establishments/eating-establishments.kml'
+    ]
+    for kml_file_path in kml_file_paths:
+        file_basename, file_extension = os.path.splitext(kml_file_path)
+        with open(kml_file_path, 'r', encoding='utf-8') as f:
+            print(f"Converting {kml_file_path} to CSV...")
+            soup = BeautifulSoup(f, 'xml')
 
-    file_basename, file_extension = os.path.splitext(kml_file_path)
-    with open(kml_file_path, 'r', encoding='utf-8') as f:
-        soup = BeautifulSoup(f, 'xml')
+            data = []
+            for entry in soup.find_all('SchemaData'):
+                entry_dict = dict()
+                for attr in entry.find_all('SimpleData'):
+                    entry_dict[attr['name']] = replace_newline_chars(attr.text)
+                data.append(entry_dict)
 
-        data = []
-        for entry in soup.find_all('SchemaData'):
-            entry_dict = dict()
+            df = pd.DataFrame(data)
+            # Delimit using '|' as some addresses contains commas
+            df.to_csv(f'{file_basename}.csv', sep="|")
 
-            for attr in entry.find_all('SimpleData'):
-                entry_dict[attr['name']] = attr.text
-            
-            data.append(entry_dict)
-
-        df = pd.DataFrame(data)
-        # Delimit using '|' as some addresses contains commas
-        df.to_csv(f'{file_basename}.csv', sep="|")
+def replace_newline_chars(s):
+    # Some description fields have newline chars
+    # TODO: Check if newline chars is okay or not, they might still be successfully added to the DB
+    s = re.sub(r'(\r|\n|\r\n)+(\w)', r', \2', s)
+    s = s.strip()
+    return s
 
 if __name__ == "__main__":
     main()
