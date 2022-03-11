@@ -83,7 +83,7 @@ function App() {
   const showListHandler = async () => {
     const inputLocation = inputLoc.current.value;
     const response = await fetch(
-      `http://192.168.1.204:5000/getitinerary2?location=${inputLocation}`
+      `http://192.168.1.204:5000/getitinerary?location=${inputLocation}`
     );
     const responseData = await response.json();
     const itineraries = responseData.itineraries.map((itin) => {
