@@ -14,10 +14,8 @@ def main():
         return
 
     file_basename, file_extension = os.path.splitext(kml_file_path)
-    with open(kml_file_path, 'r') as f:
+    with open(kml_file_path, 'r', encoding='utf-8') as f:
         soup = BeautifulSoup(f, 'xml')
-
-        column_names = [i.text for i in soup.find_all('displayName')]
 
         data = []
         for entry in soup.find_all('SchemaData'):
@@ -29,6 +27,7 @@ def main():
             data.append(entry_dict)
 
         df = pd.DataFrame(data)
+        # Delimit using '|' as some addresses contains commas
         df.to_csv(f'{file_basename}.csv', sep="|")
 
 if __name__ == "__main__":
