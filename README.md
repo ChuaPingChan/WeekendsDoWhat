@@ -41,6 +41,7 @@
         conda activate cloud
         ```
     1. Using venv
+
         (First time only) If on Ubuntu, install python3-venv
         ```
         sudo apt update && sudo apt -y install python3-venv
