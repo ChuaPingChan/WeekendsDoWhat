@@ -41,12 +41,18 @@
         conda activate cloud
         ```
     1. Using venv
+        (First time only) If on Ubuntu, install python3-venv
         ```
-        # For first time creation on Windows/Mac, to create the venv folder
+        sudo apt update && sudo apt -y install python3-venv
+        ```
+        (First time only) Create the venv folder
+        ```
         python -m venv venv
-
-        # Mac bash
-        source venv/Scripts/activate
+        ```
+        Activate the virtual environment
+        ```
+        # Mac/Ubuntu
+        source venv/bin/activate
 
         # Windows CMD
         venv\Scripts\activate
