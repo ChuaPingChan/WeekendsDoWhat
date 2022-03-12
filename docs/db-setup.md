@@ -24,7 +24,7 @@ For psql command to work, need to add PATH of PostgreSQL to system settings.
 # Start service
 brew services start postgresql
 
-# Create database with the name WeekendsDoWhat
+# Create database with the name "WeekendsDoWhat"
 $ createdb WeekendsDoWhat
 
 # Login to database
@@ -39,9 +39,11 @@ CREATE ROLE postgres WITH LOGIN PASSWORD 'password';
 psql WeekendsDoWhat -U postgres
 ```
 
-## Using Python to create table and push data 
-This script creates tables if not exists and copy data from /data to tables.
+## Using Python to create table and push data
+1. Change or add the database connection string in [utility/postgresql_setup.py](utility/postgresql_setup.py) and [app.py](app.py) appropriately.
+1. Run
+    ```
+    python ./utility/postgresql_setup.py
+    ```
+    This script creates tables if not exists and copy data from /data to tables.
 You can run as many times as possible as the script will clear the database tables before pushing the data.
-```
-python ./utility/postgresql_setup.py
-```
