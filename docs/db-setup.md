@@ -40,7 +40,7 @@ psql WeekendsDoWhat -U postgres
 ```
 
 ## Using Python to create table and push data
-1. Change or add the database connection string in [utility/postgresql_setup.py](utility/postgresql_setup.py) and [app.py](app.py) appropriately.
+1. If this is the first time a new database is created, change or add the database connection string in [utility/postgresql_setup.py](utility/postgresql_setup.py) and [app.py](app.py) appropriately.
 1. Run
     ```
     python ./utility/postgresql_setup.py

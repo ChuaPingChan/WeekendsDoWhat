@@ -26,7 +26,7 @@
     | FLASK_ENV                 | "development"           | Set this only if you are running the server locally |
     | postgres_pwd              | PostgreSQL database password  ||
     | ENV                       | "heroku" or "aws"     | Set this only on heroku or AWS |
-1. If this is the first time you are setting up the databasek, populate the newly create database following the steps in [docs/db-setup.md](docs/db-setup.md).
+1. If this is the first time you are setting up the database, populate the newly create database following the steps in [docs/db-setup.md](docs/db-setup.md).
 1. Run the Flask backend
     ```
     flask run
