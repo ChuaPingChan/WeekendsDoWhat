@@ -21,15 +21,11 @@
     ```
 1. Start a shell in this project's root directory to run the backend
     1. Set the following environment variables in your shell:
-       ```
-        # Windows CMD
-        set FLASK_ENV=development
-        set postgres_pwd=<YourPostgresDbPassword>
-
-        # Mac
-        export FLASK_ENV=development
-        export postgres_pwd=<YourPostgresDbPassword>
-        ```
+        | Environment Variable Name | Value                 | Remarks |
+        | ------------------------- | --------------------- | -------- |
+        | FLASK_ENV                 | development           | Set this only if you are running the server locally |
+        | postgres_pwd              | \<postgres password>  ||
+        | ENV                       | "heroku" or "aws"     | Set this only on heroku or AWS |
     1. Create a PostgreSQL database and populate it following the steps in [docs/db-setup.md](docs/db-setup.md).
     1. Run the Flask backend
         ```
