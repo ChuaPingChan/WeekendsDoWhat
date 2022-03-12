@@ -42,6 +42,9 @@
         ```
     1. Using venv
         ```
+        # For first time creation on Windows/Mac, to create the venv folder
+        python -m venv venv
+
         # Mac bash
         source venv/Scripts/activate
 
