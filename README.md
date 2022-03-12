@@ -1,3 +1,26 @@
+### For Ubuntu server setup
+
+Install Frontend, app and postgres
+```
+bash utility/ubuntu_install.sh
+```
+If you see this error below, you need to update the `postgres` user password. 
+```
+Traceback (most recent call last):
+  File "./utility/postgresql_setup.py", line 12, in <module>
+    conn = psycopg2.connect(f"host=localhost port=5432 dbname=WeekendsDoWhat user=postgres password={os.environ['postgres_pwd']}")
+  File "/home/weekends/.local/lib/python3.8/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+psycopg2.OperationalError: connection to server at "localhost" (127.0.0.1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+connection to server at "localhost" (127.0.0.1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+```
+Update Postgres User's password, then retry the command `bash utility/ubuntu_install.sh`
+```
+sudo su - postgres -c "psql WeekendsDoWhat"
+ALTER ROLE postgres WITH PASSWORD 'password';
+\q
+```
+
 ### Setup and Run the Server
 1. Install Python 3.9.7
     - On Windows, check the option to enable Python to be added to the PATH environment variable during installation. Otherwise, [add the path of Python to the PATH environment variable manually](https://www.architectryan.com/2018/08/31/how-to-change-environment-variables-on-windows-10/).
