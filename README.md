@@ -21,9 +21,10 @@
     \q
     ```
     and retry the command `bash utility/ubuntu_install.sh`
-1. In subsequent sessions, just set the environment variable
+1. In subsequent sessions, just set the environment variables
     | Environment Variable Name | Value                 | Remarks |
     | ------------------------- | --------------------- | -------- |
+    | FLASK_ENV                 | "development"           | Set this only if you are running the server locally |
     | postgres_pwd              | PostgreSQL database password  ||
     | ENV                       | "heroku" or "aws"     | Set this only on heroku or AWS |
 1. To run the server
