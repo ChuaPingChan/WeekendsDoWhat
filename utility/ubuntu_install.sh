@@ -25,5 +25,6 @@ sudo su - postgres -c "createdb WeekendsDoWhat"
 # ALTER ROLE postgres WITH PASSWORD 'password';
 # \q
 
+export FLASK_ENV="development"
 export postgres_pwd="password"
 python3 ./utility/postgresql_setup.py
