@@ -1,6 +1,6 @@
 ### For Ubuntu server setup
 
-1. For first time setup of the frontend, app and postgres
+1. (First time only) Setup of the frontend, app and postgres
     ```
     bash utility/ubuntu_install.sh
     ```
@@ -21,11 +21,16 @@
     \q
     ```
     and retry the command `bash utility/ubuntu_install.sh`
-1. Run the server with
+1. In subsequent sessions, just set the environment variable
+    | Environment Variable Name | Value                 | Remarks |
+    | ------------------------- | --------------------- | -------- |
+    | postgres_pwd              | PostgreSQL database password  ||
+    | ENV                       | "heroku" or "aws"     | Set this only on heroku or AWS |
+1. To run the server
     ```
-    flask run --host=0.0.0.0
+    flask run --host=0.0.0.0 --port=5050
     ```
-    or the frontend with
+    To run the frontend
     ```
     cd Frontend && npm start
     ```
@@ -71,7 +76,7 @@
 1. If this is the first time you are setting up the database, populate the newly create database following the steps in [docs/db-setup.md](docs/db-setup.md).
 1. Run the Flask backend
     ```
-    flask run --host=0.0.0.0
+    flask run --host=0.0.0.0 --port=<port_num>
     ```
 
 ### Setup and Run the Frontend server
