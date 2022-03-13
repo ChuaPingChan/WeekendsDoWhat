@@ -23,7 +23,7 @@
     and retry the command `bash utility/ubuntu_install.sh`
 1. Run the server with
     ```
-    flask run -h 0.0.0.0
+    flask run --host=0.0.0.0
     ```
     or the frontend with
     ```
@@ -71,7 +71,7 @@
 1. If this is the first time you are setting up the database, populate the newly create database following the steps in [docs/db-setup.md](docs/db-setup.md).
 1. Run the Flask backend
     ```
-    flask run -h 0.0.0.0
+    flask run --host=0.0.0.0
     ```
 
 ### Setup and Run the Frontend server
