@@ -23,7 +23,7 @@ def main():
 
     df.to_csv(f'{os.path.dirname(os.path.abspath(os.path.dirname(__file__)))}/data/parks/parks-kml-processed.csv', sep="|", index=False)
 
-    ##### Preprocess parks-kml.kml
+    ##### Preprocess eating-establishments.kml
     df = pd.read_csv(f'{os.path.dirname(os.path.abspath(os.path.dirname(__file__)))}/data/eating-establishments/eating-establishments.csv', sep="|")
 
     # Select only relevant columns
@@ -44,6 +44,9 @@ def main():
 
     # Remove rows with null data of interests
     df = df[~df[['LIC_NAME', 'STR_NAME', 'POSTCODE']].isnull().any(axis=1)]
+
+    # Perform some renaming for consistency
+    df = df.rename(columns={'BUSINESS_NAME': 'NAME'})
 
     df.to_csv(f'{os.path.dirname(os.path.abspath(os.path.dirname(__file__)))}/data/eating-establishments/eating-establishments-processed.csv', sep="|", index=False)
 

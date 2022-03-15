@@ -17,7 +17,7 @@ cur = conn.cursor()
 cur.execute("""
     CREATE TABLE IF NOT EXISTS eating_establishments(
         inc_crc VARCHAR(255) PRIMARY KEY,
-        business_name VARCHAR(255),
+        name VARCHAR(255),
         latitude double precision,
         longitude double precision,
         lic_name VARCHAR(255),
