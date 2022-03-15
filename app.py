@@ -1,11 +1,14 @@
 from fileinput import close
 import json
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 import os
 import math, random
 
 # Packages to interact with the PostgreSQL
 from flask_sqlalchemy import SQLAlchemy
+
+# Documentation: https://pypi.org/project/bing-image-downloader/
+from bing_image_downloader import downloader as img_downloader
 
 # TODO: This is just to mock reviews, to be remove later
 import names
@@ -28,6 +31,9 @@ geolocator = geopy.geocoders.Nominatim(user_agent="my_request")
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Just to avoid warnings
 db = SQLAlchemy(app)
+
+# Global variables
+DIR_IMAGE_DATA = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data', 'images')
 
 class Park(db.Model):
     __tablename__ = 'parks'
@@ -79,7 +85,6 @@ def get_n_closest_parks(x_coord, y_coord, n=10):
         dist_to_park[distance] = park
 
     return [dist_to_park[k] for k in sorted(dist_to_park)][:n]
-
 
 def construct_eating_establishment_address(id):
     ee_db_model = EatingEstablishment.query.filter_by(inc_crc=id).first()
@@ -147,11 +152,35 @@ def get_all_districts():
         "districts": ['Amber Road', 'Ang Mo Kio', 'Anson', 'Balestier', 'Beach Road', 'Bedok', 'Bishan', 'Braddell', 'Bukit Panjang', 'Bukit Timah', 'Cairnhill', 'Cecil', 'Changi', 'Choa Chu Kang', 'Clementi New Town', 'Clementi Park', 'Dairy Farm', 'Eunos', 'Geylang', 'Golden Mile', 'Harbourfront', 'High Street', 'Hillview', 'Holland Road', 'Hong Leong Garden', 'Hougang', 'Joo Chiat', 'Jurong East', 'Jurong West', 'Katong', 'Kew Drive', 'Kranji', 'Lim Chu Kang', 'Little India', 'Loyang', 'Macpherson', 'Marina East', 'Marina South', 'Middle Road', 'Novena', 'Orchard', 'Pasir Panjang', 'Pasir Ris', "People's Park", 'Punggol', 'Queenstown', 'Raffles Place', 'River Valley', 'Seletar', 'Sembawang', 'Serangoon', 'Serangoon Garden', 'Springleaf', 'Tampines', 'Tanglin', 'Tanjong Pagar', 'Telok Blangah', 'Tengah', 'Thomson', 'Tiong Bahru', 'Toa Payoh', 'Ulu Pandan', 'Upper Bukit Timah', 'Upper East Coast', 'Upper Thomson', 'Watten Estate', 'Woodgrove', 'Yishun']
     })
 
+@app.route('/place_image', methods=['GET'])
+def place_image():
+    if 'place_id' not in request.args:
+        return ('Invalid GET request format', 400)
+
+    id = request.args['place_id']
+    place = Park.query.filter_by(inc_crc=id).first()
+    if not place:
+        return ('Place not found', 204)
+
+    place_image_path = os.path.join(DIR_IMAGE_DATA, f"{place.name} Singapore", "Image_1.jpg")
+
+    try:
+        if not os.path.isfile(place_image_path):
+            img_downloader.download(f"{place.name} Singapore", limit=1,  output_dir=f"{DIR_IMAGE_DATA}", adult_filter_off=True, verbose=True, force_replace=False, timeout=5)
+    except:
+        return ('Place not found', 204)
+
+    if not os.path.isfile(place_image_path):
+        return ('Place not found', 204)
+
+    return send_file(place_image_path)
+
 @app.route('/place_info', methods=['GET'])
 def place_info():
     if 'place_id' not in request.args or 'place_type' not in request.args:
         return ('Invalid GET request format', 400)
 
+    place = None
     id = request.args['place_id']
     place_type = request.args['place_type']
 
@@ -159,14 +188,14 @@ def place_info():
         # TODO: Reconsider if this check is necessary or not
         place = Park.query.filter_by(inc_crc=id).first()
         if not place:
-            return ('', 204)
+            return ('Place not found', 204)
 
         place_address = get_park_address(id)
     elif place_type == 'food':
         # TODO: Reconsider if this check is necessary or not
         place = EatingEstablishment.query.filter_by(inc_crc=id).first()
         if not place:
-            return ('', 204)
+            return ('Place not found', 204)
 
         place_address = construct_eating_establishment_address(id)
 
