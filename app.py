@@ -139,8 +139,9 @@ def index():
 
 @app.route('/all_districts')
 def get_all_districts():
+    # TODO: Consider returning the list in decreasing population density
     return jsonify({
-        "districts": ['Raffles Place', 'Cecil', 'Marina South', 'Marina East', "People's Park", 'Anson', 'Tanjong Pagar', 'Queenstown', 'Tiong Bahru', 'Telok Blangah', 'Harbourfront', 'Pasir Panjang', 'Hong Leong Garden', 'Clementi New Town', 'High Street', 'Beach Road', 'Middle Road', 'Golden Mile', 'Little India', 'Orchard', 'Cairnhill', 'River Valley', 'Bukit Timah', 'Holland Road', 'Tanglin', 'Watten Estate', 'Novena', 'Thomson', 'Balestier', 'Toa Payoh', 'Serangoon', 'Macpherson', 'Braddell', 'Geylang', 'Eunos', 'Katong', 'Joo Chiat', 'Amber Road', 'Bedok', 'Upper East Coast', 'Kew Drive', 'Loyang', 'Changi', 'Tampines', 'Pasir Ris', 'Serangoon Garden', 'Hougang', 'Punggol', 'Bishan', 'Ang Mo Kio', 'Upper Bukit Timah', 'Clementi Park', 'Ulu Pandan', 'Jurong East', 'Jurong West', 'Hillview', 'Dairy Farm', 'Bukit Panjang', 'Choa Chu Kang', 'Lim Chu Kang', 'Tengah', 'Kranji', 'Woodgrove', 'Upper Thomson', 'Springleaf', 'Yishun', 'Sembawang', 'Seletar']
+        "districts": ['Amber Road', 'Ang Mo Kio', 'Anson', 'Balestier', 'Beach Road', 'Bedok', 'Bishan', 'Braddell', 'Bukit Panjang', 'Bukit Timah', 'Cairnhill', 'Cecil', 'Changi', 'Choa Chu Kang', 'Clementi New Town', 'Clementi Park', 'Dairy Farm', 'Eunos', 'Geylang', 'Golden Mile', 'Harbourfront', 'High Street', 'Hillview', 'Holland Road', 'Hong Leong Garden', 'Hougang', 'Joo Chiat', 'Jurong East', 'Jurong West', 'Katong', 'Kew Drive', 'Kranji', 'Lim Chu Kang', 'Little India', 'Loyang', 'Macpherson', 'Marina East', 'Marina South', 'Middle Road', 'Novena', 'Orchard', 'Pasir Panjang', 'Pasir Ris', "People's Park", 'Punggol', 'Queenstown', 'Raffles Place', 'River Valley', 'Seletar', 'Sembawang', 'Serangoon', 'Serangoon Garden', 'Springleaf', 'Tampines', 'Tanglin', 'Tanjong Pagar', 'Telok Blangah', 'Tengah', 'Thomson', 'Tiong Bahru', 'Toa Payoh', 'Ulu Pandan', 'Upper Bukit Timah', 'Upper East Coast', 'Upper Thomson', 'Watten Estate', 'Woodgrove', 'Yishun']
     })
 
 @app.route('/place_info', methods=['GET'])
@@ -189,14 +190,14 @@ def place_info():
         'reviews': reviews
     }
 
-@app.route('/getitinerary', methods=['GET'])
-def get_itinerary():
+@app.route('/get_itineraries', methods=['GET'])
+def get_itineraries():
     if 'location' not in request.args:
-        return ('', 404)
+        return ('', 400)
 
     location = geolocator.geocode(request.args['location'], country_codes='SG')
     if not location:
-        return 'Unable to identify location, please try a different input (e.g. street name)'
+        return ('Unable to identify location, please try a different input (e.g. street name)', 204)
 
     print(f"User's address:\n\t{location.address}")
     latitude, longitude = location.latitude, location.longitude
