@@ -107,18 +107,21 @@ def get_n_itineraries(x_coord, y_coord, n=4):
             'activities': [
                 {
                     'place_id': closest_eating_establishments[0].inc_crc,
+                    'place_type': 'food',
                     'name': closest_eating_establishments[0].name,
                     'address': construct_eating_establishment_address(closest_eating_establishments[0].inc_crc),
                     'rating': round(random.randrange(30, 51) * 0.1, 1)
                 },
                 {
                     'place_id': park.inc_crc,
+                    'place_type': 'park',
                     'name': park.name,
                     'address': get_park_address(park.inc_crc),
                     'rating': round(random.randrange(30, 51) * 0.1, 1)
                 },
                 {
                     'place_id': closest_eating_establishments[1].inc_crc,
+                    'place_type': 'food',
                     'name': closest_eating_establishments[1].name,
                     'address': construct_eating_establishment_address(closest_eating_establishments[1].inc_crc),
                     'rating': round(random.randrange(30, 51) * 0.1, 1)
@@ -147,7 +150,7 @@ def get_all_districts():
 @app.route('/place_info', methods=['GET'])
 def place_info():
     if 'place_id' not in request.args or 'place_type' not in request.args:
-        return ('', 400)
+        return ('Invalid GET request format', 400)
 
     id = request.args['place_id']
     place_type = request.args['place_type']
@@ -192,8 +195,13 @@ def place_info():
 
 @app.route('/get_itineraries', methods=['GET'])
 def get_itineraries():
-    if 'location' not in request.args:
-        return ('', 400)
+    if 'location' not in request.args or 'num_itineraries' not in request.args:
+        return ('Invalid GET request format', 400)
+
+    try:
+        num_itineraries = int(request.args['num_itineraries'])
+    except:
+        return ('num_itineraries is not set properly in GET request', 400)
 
     location = geolocator.geocode(request.args['location'], country_codes='SG')
     if not location:
@@ -203,7 +211,7 @@ def get_itineraries():
     latitude, longitude = location.latitude, location.longitude
 
     response = jsonify({
-        "itineraries": get_n_itineraries(latitude, longitude)
+        "itineraries": get_n_itineraries(latitude, longitude, num_itineraries)
     }
     )
     response.headers.add('Access-Control-Allow-Origin', '*')
