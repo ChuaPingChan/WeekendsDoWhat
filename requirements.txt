@@ -13,6 +13,7 @@ itsdangerous==2.1.1
 Jinja2==3.0.3
 lxml==4.8.0
 MarkupSafe==2.1.0
+names==0.3.0
 numpy==1.22.3
 pandas==1.4.1
 psycopg2-binary==2.9.3
