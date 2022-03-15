@@ -13,6 +13,15 @@ else:
 # Creating a cursor object using the cursor()
 cur = conn.cursor()
 
+# Drop tables
+cur.execute("""
+    DROP TABLE IF EXISTS eating_establishments;
+""")
+cur.execute("""
+    DROP TABLE IF EXISTS parks;
+""")
+
+
 # Create tables 
 cur.execute("""
     CREATE TABLE IF NOT EXISTS eating_establishments(
@@ -29,10 +38,6 @@ cur.execute("""
 """)
 
 cur.execute("""
-    DELETE FROM eating_establishments
-""")
-
-cur.execute("""
     CREATE TABLE IF NOT EXISTS parks(
         inc_crc VARCHAR(255) PRIMARY KEY,
         name VARCHAR(255),
@@ -41,10 +46,6 @@ cur.execute("""
         description text,
         hyperlink text
     )
-""")
-
-cur.execute("""
-    DELETE FROM parks
 """)
 
 if 'ENV' in os.environ and os.environ['ENV'] == 'heroku':
