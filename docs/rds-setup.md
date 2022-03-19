@@ -11,7 +11,7 @@ Connectivity: Public access -> Yes
 Additional configuration: initial database name -> WeekendsDoWhat (it seems that this cannot be renamed after db creation)  
                           Deletion protection -> disable
 
-### Edit security group od database
+### Edit security group of database
 Edit inbound rules:   
 Add rule -> Type: PostgreSQL; Source: 0.0.0.0/0  
 Add rule -> Type: PostgreSQL; Source: ::/0 (Just in case someone use IPv6)
