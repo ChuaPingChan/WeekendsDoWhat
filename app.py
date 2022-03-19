@@ -404,9 +404,14 @@ def add_review():
         return ('Invalid request format', 400)
 
     user_email = get_jwt_identity()
-    username = User.query.filter_by(email=user_email).first().username
+    if not user_email:
+        return ('Only premium users can add reviews', 403)
+    user_query_res = User.query.filter_by(email=user_email).first()
+    if not user_query_res:
+        return ('Only premium users can add reviews', 403)
+    username = user_query_res.username
     if not user_is_premium(user_email):
-        return ('Free users cannot add reviews', 403)
+        return ('Only premium users can add reviews', 403)
 
     place_id = request.json['place_id']
     rating = int(request.json['rating'])
