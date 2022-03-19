@@ -18,12 +18,15 @@ from flask_sqlalchemy import SQLAlchemy
 # Documentation: https://pypi.org/project/bing-image-downloader/
 from bing_image_downloader import downloader as img_downloader
 
+from flask_cors import CORS
+
 # TODO: These are just to mock reviews, can be removed later if needed
 import random
 import names
 
 # Init app
 app = Flask(__name__)
+CORS(app)
 
 # Connect to database, check out https://www.youtube.com/watch?v=w25ea_I89iM for details
 if 'ENV' in os.environ and os.environ['ENV'] == 'heroku':
