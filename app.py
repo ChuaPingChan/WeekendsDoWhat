@@ -1,16 +1,8 @@
+from fileinput import close
+import json
 from flask import Flask, request, jsonify, send_file
-import os, math
-import datetime
-
-from flask_jwt_extended import create_access_token
-from flask_jwt_extended import get_jwt_identity
-from flask_jwt_extended import jwt_required
-from flask_jwt_extended import JWTManager
-
-from flask_bcrypt import Bcrypt
-
-from sqlalchemy import ForeignKey, desc
-from sqlalchemy.exc import IntegrityError
+import os
+import math, random
 
 # Packages to interact with the PostgreSQL
 from flask_sqlalchemy import SQLAlchemy
@@ -18,8 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 # Documentation: https://pypi.org/project/bing-image-downloader/
 from bing_image_downloader import downloader as img_downloader
 
-# TODO: These are just to mock reviews, can be removed later if needed
-import random
+# TODO: This is just to mock reviews, to be remove later
 import names
 
 # Init app
@@ -33,24 +24,16 @@ elif 'ENV' in os.environ and os.environ['ENV'] == 'aws':
 else:
     app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://postgres:{os.environ['postgres_pwd']}@localhost/WeekendsDoWhat"
 
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Just to avoid warnings
-db = SQLAlchemy(app)
-
 # For getting location information from user's input
 import geopy
 geopy.geocoders.options.default_timeout = 30
 geolocator = geopy.geocoders.Nominatim(user_agent="my_request")
 
-# For user handling and authentication
-app.config["JWT_SECRET_KEY"] = "super-secret"  # TODO: Change this later
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(seconds=3600)
-app.config['JWT_REFRESH_TOKEN_EXPIRES'] = datetime.timedelta(seconds=3600)
-jwt = JWTManager(app)
-bcrypt = Bcrypt(app)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Just to avoid warnings
+db = SQLAlchemy(app)
 
-# Other global variables
+# Global variables
 DIR_IMAGE_DATA = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data', 'images')
-PLACE_TYPES_SUPPORTED = set(['food', 'park'])
 
 class Park(db.Model):
     __tablename__ = 'parks'
@@ -73,40 +56,6 @@ class EatingEstablishment(db.Model):
     postcode = db.Column(db.Integer())
     level_no = db.Column(db.String())
 
-class User(db.Model):
-    __tablename__ = 'users'
-    email = db.Column(db.String(), primary_key=True)
-    username = db.Column(db.String(), nullable=False)
-    password = db.Column(db.String(), nullable=False)
-    premium = db.Column(db.Boolean, nullable=False)
-
-    def __init__(self, email, username, password):
-        self.email = email
-        self.username = username
-        self.password = bcrypt.generate_password_hash(password).decode("utf-8")
-        self.premium = False
-
-class Review(db.Model):
-    __tablename__ = 'reviews'
-    email = db.Column(db.String(), ForeignKey('users.email'), primary_key=True)
-    username = db.Column(db.String(), nullable=False)
-    place_id = db.Column(db.String(), primary_key=True)
-    datetime = db.Column(db.DateTime(), default=datetime.datetime.now)
-    rating = db.Column(db.Integer(), nullable=False)
-    review = db.Column(db.Text())
-
-    def __init__(self, email, username, place_id, rating, review):
-        self.email = email
-        self.username = username
-        self.place_id = place_id
-        self.rating = rating
-        self.review = review
-
-def place_type_valid(place_type):
-    if place_type in PLACE_TYPES_SUPPORTED:
-        return True
-    return False
-
 def get_closest_eating_establishments(x_coord, y_coord, n=10):
     """
     Returns the n closest eating_establishments from the given coordinates
@@ -126,7 +75,7 @@ def get_n_closest_parks(x_coord, y_coord, n=10):
     """
     Returns the n closest parks from the given coordinates
     """
-    # TODO: Improve recommendation later if needed
+    # Crude implementation of finding the parks with the shortest Euclidean distances, we can optimize this later if needed
     dist_to_park = dict()
     for park in Park.query.all():
         park_x_coord = float(park.latitude)
@@ -149,7 +98,7 @@ def get_park_address(id):
         address = geopy_location.address
     return address
 
-def get_n_itineraries(x_coord, y_coord, n=4, show_ratings=False):
+def get_n_itineraries(x_coord, y_coord, n=4):
     # TODO: Polish itineraries JSON format
     itineraries = []
 
@@ -159,7 +108,6 @@ def get_n_itineraries(x_coord, y_coord, n=4, show_ratings=False):
     for park in closest_parks:
         closest_eating_establishments = get_closest_eating_establishments(park.latitude, park.longitude, 2)
 
-        # TODO: Show ratings only for premium users
         itineraries.append({
             'activities': [
                 {
@@ -167,8 +115,6 @@ def get_n_itineraries(x_coord, y_coord, n=4, show_ratings=False):
                     'place_type': 'food',
                     'name': closest_eating_establishments[0].name,
                     'address': construct_eating_establishment_address(closest_eating_establishments[0].inc_crc),
-                    # TODO: Return rating only if user is a premium user
-                    # TODO: Add rating column to places DB and update them for each review
                     'rating': round(random.randrange(30, 51) * 0.1, 1)
                 },
                 {
@@ -190,11 +136,6 @@ def get_n_itineraries(x_coord, y_coord, n=4, show_ratings=False):
     
     return itineraries
 
-def user_is_premium(user_email):
-    query_res = User.query.filter_by(email=user_email).first()
-    if query_res:
-        return query_res.premium
-    return False
 
 #############
 # REST APIs #
@@ -203,66 +144,6 @@ def user_is_premium(user_email):
 @app.route('/')
 def index():
     return jsonify({ 'msg': 'This is the server of WeekendsDoWhat' })
-
-# TODO: Use SSL to secure data in POST request
-# Create a route to authenticate your users and return JWTs. The
-# create_access_token() function is used to actually generate the JWT.
-@app.route("/login", methods=["POST"])
-def create_token():
-    if 'email' not in request.json or 'password' not in request.json:
-        return ('Invalid request', 400)
-
-    email_input = request.json.get('email', None)
-    password_input = request.json.get('password', None)
-
-    # TODO: Authentication
-    query_res = User.query.filter_by(email=email_input).first()
-    if not query_res or not bcrypt.check_password_hash(query_res.password, password_input):
-        return ('Bad email or password', 401)
-
-    access_token = create_access_token(identity=query_res.email)
-    return {
-        "access_token": access_token,
-        "is_premium": query_res.premium
-    }
-
-# TODO: Use SSL to secure data in POST request
-@app.route('/signup', methods=['POST'])
-def signup():
-    if set(['email', 'username', 'password']) - set(request.json):
-        return ('Invalid request', 400)
-
-    email = request.json['email']
-    username = request.json['username']
-    password = request.json['password']
-
-    user = User(email, username, password)
-    try:
-        db.session.add(user)
-        db.session.commit()
-    except IntegrityError as e:
-        return (f'Email address already exists', 409)
-    except Exception as e:
-        print(type(e))
-        return (f'Sign up failed', 400)
-
-    access_token = create_access_token(identity=email)
-    return ({
-        'access_token': access_token,
-        'is_premium': False
-    }, 200)
-
-@app.route('/set_premium_user', methods=["GET"])
-@jwt_required()
-def set_premium_user():
-    user_email = get_jwt_identity()
-
-    num_rows_matched = User.query.filter_by(email=user_email).update({"premium": True})
-    if not num_rows_matched == 1:
-        return ('', 500)
-
-    db.session.commit()
-    return ('', 200)
 
 @app.route('/all_districts')
 def get_all_districts():
@@ -274,7 +155,7 @@ def get_all_districts():
 @app.route('/place_image', methods=['GET'])
 def place_image():
     if 'place_id' not in request.args:
-        return ('Invalid request format', 400)
+        return ('Invalid GET request format', 400)
 
     id = request.args['place_id']
     place = Park.query.filter_by(inc_crc=id).first()
@@ -295,10 +176,9 @@ def place_image():
     return send_file(place_image_path)
 
 @app.route('/place_info', methods=['GET'])
-@jwt_required(optional=True)
 def place_info():
-    if 'place_id' not in request.args or 'place_type' not in request.args or not place_type_valid(request.args['place_type']):
-        return ('Invalid request format', 400)
+    if 'place_id' not in request.args or 'place_type' not in request.args:
+        return ('Invalid GET request format', 400)
 
     place = None
     id = request.args['place_id']
@@ -319,61 +199,33 @@ def place_info():
 
         place_address = construct_eating_establishment_address(id)
 
-    ##### Get reviews and ratings
-
-    # Default shown to free users
+    # Get reviews
     reviews = []
-    overall_rating = round(random.randrange(30, 51) * 0.1, 1)       # TODO: Use real overall ratings
-    total_num_reviews = 0
 
-    # Get reviews only for premium users
-    user_email = get_jwt_identity()
-    if user_email and user_is_premium(user_email):
-        # Need to reset it to 0 to calculate the true overall rating
-        overall_rating = 0
+    # TODO: Remove fake reviews
+    hardcoded_review = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+    num_reviews = random.randrange(0, 7)
+    for i in range(num_reviews):
+        review = dict()
+        review['username'] = names.get_full_name()
+        review_length = random.randrange(25, 200)
+        review['review'] = hardcoded_review[:review_length]
 
-        reviews_query_res = Review.query.filter_by(place_id=id).order_by(desc(Review.datetime))
-        for review in reviews_query_res:
-            reviews.append({
-                'username': review.username,
-                'rating': review.rating,
-                'review': review.review
-            })
-
-            # Update overall stats
-            total_num_reviews += 1
-            overall_rating = (overall_rating * (total_num_reviews - 1) + review.rating) / total_num_reviews
-
-        # Mock some reviews
-        # TODO: Remove fake reviews
-        hardcoded_review = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-        num_reviews = random.randrange(1, 3)
-        for i in range(num_reviews):
-            review = dict()
-            review['username'] = names.get_full_name()
-            review_length = random.randrange(25, 200)
-            review['review'] = hardcoded_review[:review_length]
-            rand_rating = round(random.randrange(30, 51) * 0.1, 1)
-            review['rating'] = rand_rating
-
-            # Update overall stats
-            total_num_reviews += 1
-            overall_rating = (overall_rating * (total_num_reviews - 1) + review['rating']) / total_num_reviews
-
-            reviews.append(review)
+        # reviews.append(json.dumps(review))
+        reviews.append(review)
 
     return {
         'name': place.name,
         'address': place_address,
-        'rating': overall_rating,
+        # TODO: Remove fake rating
+        'rating': round(random.randrange(30, 51) * 0.1, 1),
         'reviews': reviews
     }
 
 @app.route('/get_itineraries', methods=['GET'])
-@jwt_required(optional=True)
 def get_itineraries():
     if 'location' not in request.args or 'num_itineraries' not in request.args:
-        return ('Invalid request format', 400)
+        return ('Invalid GET request format', 400)
 
     try:
         num_itineraries = int(request.args['num_itineraries'])
@@ -388,56 +240,11 @@ def get_itineraries():
     latitude, longitude = location.latitude, location.longitude
 
     response = jsonify({
-        "itineraries": get_n_itineraries(latitude, longitude, n=num_itineraries, show_ratings=user_is_premium(get_jwt_identity()))
+        "itineraries": get_n_itineraries(latitude, longitude, num_itineraries)
     }
     )
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
-
-# TODO: Use SSL to secure data in POST request
-@app.route('/add_review', methods=["POST"])
-@jwt_required()
-def add_review():
-    review_length_limit = 1000
-
-    if set(['rating', 'review', 'place_id']) - set(request.json):
-        return ('Invalid request format', 400)
-
-    user_email = get_jwt_identity()
-    username = User.query.filter_by(email=user_email).first().username
-    if not user_is_premium(user_email):
-        return ('Free users cannot add reviews', 403)
-
-    place_id = request.json['place_id']
-    rating = int(request.json['rating'])
-    if rating < 1 or rating > 5:
-        return ('Invalid rating', 400)
-    review = request.json['review']
-    if len(review) > review_length_limit:
-        return (f'Review exceeded {review_length_limit} characters', 400)
-
-    # Validate place_id
-    # TODO: Ideally, this should be a constraint in the DB layer
-    if not Park.query.filter_by(inc_crc=place_id) and not EatingEstablishment.query.filter_by(inc_crc=place_id):
-        return ('Invalid place', 400)
-
-    # Update user's review if present
-    query_result = Review.query.filter_by(email=user_email).first()
-    if query_result:
-        query_result.rating = rating
-        query_result.review = review
-        # PostgreSQL doesn't support ON UPDATE during create table
-        query_result.datetime = datetime.datetime.now()
-        db.session.commit()
-        return ('Review updated successfully', 200)
-
-    try:
-        db.session.add(Review(user_email, username, place_id, rating, review))
-        db.session.commit()
-    except Exception as e:
-        return (f'Failed to add review', 400)
-
-    return ('Review submitted successfully', 200)
 
 # Run server
 if __name__ == '__main__':

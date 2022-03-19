@@ -17,18 +17,10 @@ cur = conn.cursor()
 cur.execute("""
     DROP TABLE IF EXISTS eating_establishments;
 """)
-
 cur.execute("""
     DROP TABLE IF EXISTS parks;
 """)
 
-cur.execute("""
-    DROP TABLE IF EXISTS reviews;
-""")
-
-cur.execute("""
-    DROP TABLE IF EXISTS users;
-""")
 
 # Create tables 
 cur.execute("""
@@ -53,29 +45,6 @@ cur.execute("""
         longitude double precision,
         description text,
         hyperlink text
-    )
-""")
-
-cur.execute("""
-    CREATE TABLE IF NOT EXISTS users(
-        email VARCHAR(255) PRIMARY KEY,
-        username VARCHAR(255) NOT NULL,
-        password VARCHAR(80) NOT NULL,
-        premium BOOLEAN NOT NULL
-    )
-""")
-
-# TODO: Rethink the design to enforce FK constraints of place IDs
-cur.execute("""
-    CREATE TABLE IF NOT EXISTS reviews(
-        email VARCHAR(255),
-        username VARCHAR(255) NOT NULL,
-        place_id VARCHAR(255),
-        datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        rating INTEGER,
-        review text,
-        FOREIGN KEY (email) REFERENCES users(email),
-        PRIMARY KEY (email, place_id)
     )
 """)
 
