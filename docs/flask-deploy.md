@@ -4,7 +4,7 @@ Only tested on Ubuntu
 ### Create RDS database
 Follow the steps in [rds-setup.md](rds-setup.md)
 
-###Install EBS CLI
+### Install EBS CLI
 (Only for first time. It's better to install this on your local machine rather than the shared one because u also need AWS credentials to access the EBS) 
 
 Follow this [link](https://github.com/aws/aws-elastic-beanstalk-cli-setup) for installation.
@@ -17,7 +17,7 @@ application.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@
 application.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://[rds_username]:[rds_password]@[rds_endpoint]:5432/[rds_db_name]'
 ```
 
-###Create and launch EBS using command line
+### Create and launch EBS using command line
 Currently, please only place application.py and requirements.txt in the folder and launch the terminal  
 Create environment
 ```
@@ -35,10 +35,10 @@ eb deploy flask-env
 eb deploy [application_name]
 ```
 
-###Edit security group of database
+### Edit security group of database
 Add one more inbound rule to the created RDS database:  
 Add rule -> Type: PostgreSQL; Source: [security group of created EBS]
 
-###Debug
+### Debug
 After the creation of EBS is completed, go to the application -> Logs -> Request Logs -> Full Logs ->  
 Download zip file -> eb-engine.log (most of the useful info is in this file)
