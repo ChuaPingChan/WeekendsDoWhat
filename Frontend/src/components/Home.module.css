@@ -1,0 +1,10 @@
+.search {
+    width: 130px;
+    height: 35px;
+    border: 1px solid;
+    border-radius: 6px;
+    margin-top: 20px;
+}
+.search:hover {
+    background: linear-gradient(45deg, greenyellow, dodgerblue);
+}
