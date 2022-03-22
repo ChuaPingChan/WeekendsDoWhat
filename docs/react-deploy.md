@@ -2,7 +2,7 @@
 Only tested on Ubuntu
 
 ### Update the URL
-In [Constants.js](Frontend/src/Utils/Constants.js), update the URL (need to include http://)
+In [Constants.js](./Frontend/src/Utils/Constants.js), update the URL (need to include http://)
 ```
 api_endpoint: "http://flask-env3.eba-shnxm3uf.ap-southeast-1.elasticbeanstalk.com"
 api_endpoint: "[URL of Flask's EBS]"
