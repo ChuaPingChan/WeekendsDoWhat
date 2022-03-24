@@ -1,0 +1,303 @@
+{
+	"info": {
+		"_postman_id": "d605d751-c22a-4313-97b6-84aa2d7608be",
+		"name": "WeekendsDoWhat",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "all_districts (pub)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{ipaddress}}/all_districts",
+					"protocol": "http",
+					"host": [
+						"{{ipaddress}}"
+					],
+					"path": [
+						"all_districts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_itineraries",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{ipaddress}}/get_itineraries?location=Clementi&num_itineraries=4",
+					"protocol": "http",
+					"host": [
+						"{{ipaddress}}"
+					],
+					"path": [
+						"get_itineraries"
+					],
+					"query": [
+						{
+							"key": "location",
+							"value": "Clementi"
+						},
+						{
+							"key": "num_itineraries",
+							"value": "4"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "place_image",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{ipaddress}}/place_image?place_id=DB390E826A98D15C",
+					"protocol": "http",
+					"host": [
+						"{{ipaddress}}"
+					],
+					"path": [
+						"place_image"
+					],
+					"query": [
+						{
+							"key": "place_id",
+							"value": "00E1DB2943D1749C",
+							"description": "Marina Promenade",
+							"disabled": true
+						},
+						{
+							"key": "place_id",
+							"value": "DB390E826A98D15C",
+							"description": "Jurong Lake Gardens"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"pc_ext@outlook.com\",\r\n    \"username\": \"PC Chua\",\r\n    \"password\": \"password123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{ipaddress}}/signup",
+					"protocol": "http",
+					"host": [
+						"{{ipaddress}}"
+					],
+					"path": [
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"pc_ext@outlook.com\",\r\n    \"password\": \"password123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{ipaddress}}/login",
+					"protocol": "http",
+					"host": [
+						"{{ipaddress}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "place_info",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{ipaddress}}/place_info?place_id=80E8DB74D45ABB4A&place_type=food",
+					"protocol": "http",
+					"host": [
+						"{{ipaddress}}"
+					],
+					"path": [
+						"place_info"
+					],
+					"query": [
+						{
+							"key": "place_id",
+							"value": "80E8DB74D45ABB4A"
+						},
+						{
+							"key": "place_type",
+							"value": "food"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "set_premium_user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{ipaddress}}/set_premium_user",
+					"protocol": "http",
+					"host": [
+						"{{ipaddress}}"
+					],
+					"path": [
+						"set_premium_user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add_review",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"rating\": \"4\",\r\n    \"review\": \"Good food and service, will visit again!\",\r\n    \"place_id\": \"80E8DB74D45ABB4A\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{ipaddress}}/add_review",
+					"protocol": "http",
+					"host": [
+						"{{ipaddress}}"
+					],
+					"path": [
+						"add_review"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login (Feynman)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"richard_feynman@outlook.com\",\r\n    \"password\": \"test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{ipaddress}}/login",
+					"protocol": "http",
+					"host": [
+						"{{ipaddress}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "signup (Feynman)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"richard_feynman@outlook.com\",\r\n    \"username\": \"Richard Feynman\",\r\n    \"password\": \"test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{ipaddress}}/signup",
+					"protocol": "http",
+					"host": [
+						"{{ipaddress}}"
+					],
+					"path": [
+						"signup"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0NzY3NDI3NCwianRpIjoiZDMwYWU4MWQtNjhhYi00Mzk1LWEwYWEtMzU1MDA0MzY4YTc4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InBjX2V4dEBvdXRsb29rLmNvbSIsIm5iZiI6MTY0NzY3NDI3NCwiZXhwIjoxNjQ3Njc3ODc0fQ.voRVZ1XibaeHkV8wOP8EfRAIkK9sArNERh8rFA1WBIE",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "ipaddress",
+			"value": "localhost:5000"
+		}
+	]
+}
