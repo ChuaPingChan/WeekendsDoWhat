@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import Select from "react-select";
+import Modal from "../UI/Modal";
 import { Constants } from "../Utils/Constants";
 import classes from "./Home.module.css";
+import { useSelector } from "react-redux";
 
 const Home = () => {
   const [locations, setLocations] = useState([]);
@@ -11,6 +13,13 @@ const Home = () => {
     value: "",
   });
   const history = useHistory();
+  // const [isPremium, setIsPremium] = useState(false);
+  const [showModal, setShowModal] = useState(true);
+
+  const isPremium = useSelector((state) => {
+    return state.isPremium;
+  });
+
   useEffect(async () => {
     const res = await fetch(`${Constants.api_endpoint}/all_districts`, {
       method: "GET",
@@ -42,8 +51,49 @@ const Home = () => {
       value: e.value,
     });
   };
+  const setUserToPremium = async () => {
+    const res = await fetch(`${Constants.api_endpoint}/set_premium_user`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+    });
+    if (res) {
+      const data = await res.json();
+      setShowModal(false);
+    }
+  };
   return (
-    <>
+    <React.Fragment>
+      {!isPremium && showModal && (
+        <Modal onClose={() => setShowModal(false)}>
+          <div className={classes.text}>
+            <span
+              style={{
+                fontSize: "30px",
+                fontWeight: "bold",
+              }}
+            >
+              Do you want to be a premium user?
+            </span>
+          </div>
+          <div className={classes.actions}>
+            <button
+              className={classes["button--alt"]}
+              onClick={setUserToPremium}
+            >
+              Yes
+            </button>
+            <button
+              className={classes["button--alt"]}
+              onClick={() => setShowModal(false)}
+            >
+              No
+            </button>
+          </div>
+        </Modal>
+      )}
       <div
         style={{
           position: "absolute",
@@ -75,7 +125,7 @@ const Home = () => {
         )}
         
       </div> */}
-    </>
+    </React.Fragment>
   );
 };
 export default Home;

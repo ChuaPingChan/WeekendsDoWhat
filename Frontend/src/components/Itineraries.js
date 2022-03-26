@@ -3,8 +3,10 @@ import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import Card from "../Layout/Card";
 import { Constants } from "../Utils/Constants";
+import Activities from "./Activities";
 const Itineraries = () => {
   const [locationList, setLocationList] = useState([]);
+  const [showDetails, setShowDetails] = useState(false);
   const params = useParams();
   const history = useHistory();
   useEffect(async () => {
@@ -27,8 +29,8 @@ const Itineraries = () => {
           id: Math.random(),
           activities: itin.activities.map((activity) => {
             return {
-              id: Math.random(),
-              type: activity.type,
+              id: activity.place_id,
+              type: activity.place_type,
               name: activity.name,
               address: activity.address,
             };
@@ -40,29 +42,24 @@ const Itineraries = () => {
   }, []);
   return (
     <>
-      {locationList.map((loc) => {
+      {locationList.map((loc, index) => {
         return (
           <Card>
-            <ul>
+            <ul key={loc.id}>
               <li>
                 <div>
-                  <h3>{loc.name}</h3>
-                  <div>{loc.restaurant}</div>
-                  <div>{loc.location}</div>
-                  {loc.activities.map((activity) => {
-                    return (
-                      <ul>
-                        <li>
-                          <div>
-                            <h3>{activity.type}</h3>
-                            <div>{activity.name}</div>
-                            <div>{activity.address}</div>
-                          </div>
-                        </li>
-                      </ul>
-                    );
-                  })}
+                  <h1>Itinerary {index + 1}</h1>
+                  <span>{loc.activities.length} activities</span>
                 </div>
+                <div>
+                  <button type="button" onClick={() => setShowDetails(true)}>
+                    Details
+                  </button>
+                </div>
+                <Activities
+                  activities={loc.activities}
+                  showDetails={showDetails}
+                ></Activities>
               </li>
             </ul>
           </Card>

@@ -3,11 +3,13 @@ import React, { useState } from "react";
 import "./Login.css";
 import { Constants } from "../Utils/Constants";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
+  const dispatch = useDispatch();
   const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await fetch(`${Constants.api_endpoint}/login`, {
@@ -23,6 +25,7 @@ const Login = () => {
     if (res) {
       const data = await res.json();
       localStorage.setItem("token", data.access_token);
+      dispatch({ type: "setPremiumUserState", isPremium: data.is_premium });
       history.push("/home");
     }
   };

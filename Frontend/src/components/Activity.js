@@ -1,0 +1,93 @@
+import { Fragment, useState } from "react";
+import Card from "../Layout/Card";
+import Modal from "../UI/Modal";
+import { Constants } from "../Utils/Constants";
+
+const Activity = (props) => {
+  const activity = props.activity;
+  const [showActivityDetailsModal, setShowActivityDetailsModal] =
+    useState(false);
+  const [imageUrl, setImageUrl] = useState("");
+  const [placeDetails, setplaceDetails] = useState();
+
+  const showActivityDetails = async () => {
+    const res = await getImageDetails();
+    const imageBlob = await res.blob();
+    const imageObjectURL = URL.createObjectURL(imageBlob);
+    setImageUrl(imageObjectURL);
+    const placeDetails = await getPlaceDetails();
+    setplaceDetails(placeDetails);
+    setShowActivityDetailsModal(true);
+  };
+
+  const getPlaceDetails = async () => {
+    const url = `${Constants.api_endpoint}/place_info?place_id=${activity.id}&place_type=${activity.type}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    return data;
+  };
+
+  const getImageDetails = async () => {
+    const url = `${Constants.api_endpoint}/place_image?place_id=${activity.id}`;
+    const res = await fetch(url);
+    return res;
+  };
+  return (
+    <Fragment>
+      <Card handleClick={showActivityDetails}>
+        <ul>
+          <li key={activity.id}>
+            <div>
+              <h3>{activity.type}</h3>
+              <div>{activity.name}</div>
+            </div>
+          </li>
+        </ul>
+      </Card>
+      {showActivityDetailsModal && (
+        <Modal>
+          <img url={imageUrl}></img>
+          {/* <div className={classes.text}>
+            <span
+              style={{
+                fontSize: "30px",
+                fontWeight: "bold",
+              }}
+            >
+              Do you want to be a premium user?
+            </span>
+          </div>
+          <div className={classes.actions}>
+            <button
+              className={classes["button--alt"]}
+              onClick={setUserToPremium}
+            >
+              Yes
+            </button>
+            <button
+              className={classes["button--alt"]}
+              onClick={() => setShowModal(false)}
+            >
+              No
+            </button>
+          </div> */}
+          <div>
+            <h1>{placeDetails.name}</h1>
+            <p>{placeDetails.address}</p>
+            <div>
+              <span>Rating</span>
+              <p>{placeDetails.rating}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setShowActivityDetailsModal(false)}
+            >
+              Close
+            </button>
+          </div>
+        </Modal>
+      )}
+    </Fragment>
+  );
+};
+export default Activity;
