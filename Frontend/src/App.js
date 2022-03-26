@@ -11,24 +11,28 @@ import Itineraries from "./components/Itineraries";
 function App() {
   return (
     <React.Fragment>
-      <Header></Header>
-      <Switch>
-        <Route path="/" exact>
-          <Redirect to="/login"></Redirect>
-        </Route>
-        <Route path="/login">
-          <Login></Login>
-        </Route>
-        <Route path="/signup">
-          <Signup></Signup>
-        </Route>
-        <Route path="/home" exact>
-          <Home></Home>
-        </Route>
-        <Route path="/itineraries/:location">
-          <Itineraries></Itineraries>
-        </Route>
-      </Switch>
+      <div>
+        <Header></Header>
+      </div>
+      <div>
+        <Switch>
+          <Route path="/" exact>
+            <Redirect to="/login"></Redirect>
+          </Route>
+          <Route path="/login">
+            <Login></Login>
+          </Route>
+          <Route path="/signup">
+            <Signup></Signup>
+          </Route>
+          <Route path="/home" exact>
+            <Home></Home>
+          </Route>
+          <Route path="/itineraries/:location">
+            <Itineraries></Itineraries>
+          </Route>
+        </Switch>
+      </div>
     </React.Fragment>
   );
 }
