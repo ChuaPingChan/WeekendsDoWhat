@@ -1,8 +1,37 @@
 import React from "react";
 import classes from "./Header.module.css";
-import bgImage from "../assets/background_image.jpg";
 import { NavLink } from "react-router-dom";
 import logo from '../logo-white.png'
+
+const LoginLogoutSignup = () => {
+  if (localStorage.getItem("token") === null) {
+    return  <nav>
+              <ul>
+                <li>
+                  <NavLink activeClassName={classes.active} to="/login">
+                    Login
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink activeClassName={classes.active} to="/signup">
+                    Signup
+                  </NavLink>
+                </li>
+              </ul>
+            </nav>;
+  } else {
+    return  <nav>
+              <ul>
+                <li>
+                  <NavLink activeClassName={classes.active} to="/logout">
+                    Logout
+                  </NavLink>
+                </li>
+              </ul>
+            </nav>;
+  }
+}
+
 const Header = () => {
   return (
     <React.Fragment>
@@ -18,20 +47,7 @@ const Header = () => {
         >
           WeekendsDoWhat
         </h1>
-        <nav>
-          <ul>
-            <li>
-              <NavLink activeClassName={classes.active} to="/login">
-                Login
-              </NavLink>
-            </li>
-            <li>
-              <NavLink activeClassName={classes.active} to="/signup">
-                Signup
-              </NavLink>
-            </li>
-          </ul>
-        </nav>
+        <LoginLogoutSignup></LoginLogoutSignup>
       </header>
     </React.Fragment>
   );

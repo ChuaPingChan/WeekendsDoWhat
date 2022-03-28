@@ -3,11 +3,13 @@ import React from "react";
 import Header from "./Layout/Header";
 import { Route } from "react-router-dom";
 import Login from "./components/Login";
+import Logout from "./components/Logout";
 import Signup from "./components/Signup";
 import Home from "./components/Home";
 import { Switch } from "react-router-dom";
 import { Redirect } from "react-router-dom";
 import Itineraries from "./components/Itineraries";
+
 function App() {
   return (
     <React.Fragment>
@@ -21,6 +23,9 @@ function App() {
           </Route>
           <Route path="/login">
             <Login></Login>
+          </Route>
+          <Route path="/logout">
+            <Logout></Logout>
           </Route>
           <Route path="/signup">
             <Signup></Signup>

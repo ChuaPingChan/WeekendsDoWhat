@@ -10,6 +10,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const history = useHistory();
   const dispatch = useDispatch();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await fetch(`${Constants.api_endpoint}/login`, {
@@ -29,6 +30,7 @@ const Login = () => {
       history.push("/home");
     }
   };
+
   return (
     <div className="Login">
       <Card>
