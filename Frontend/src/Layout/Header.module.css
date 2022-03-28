@@ -44,3 +44,8 @@
   padding-bottom: 0.25rem;
   border-bottom: 4px solid #95bcf0;
 }
+
+.header img {
+  height: 80%;
+  padding-left: 1em;
+}
