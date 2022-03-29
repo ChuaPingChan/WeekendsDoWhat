@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import useFullPageSpinner from "../hooks/useFullPageSpinner";
 import Card from "../Layout/Card";
 import { Constants } from "../Utils/Constants";
 import Activities from "./Activities";
 const Itineraries = () => {
   const [locationList, setLocationList] = useState([]);
-  const [showDetails, setShowDetails] = useState(false);
+
+  const [loader, showSpinner, hideSpinner] = useFullPageSpinner();
   const params = useParams();
   const history = useHistory();
   useEffect(async () => {
+    showSpinner();
     const res = await fetch(
       `${Constants.api_endpoint}/get_itineraries?location=${params.location}&num_itineraries=4`,
       {
@@ -23,6 +26,7 @@ const Itineraries = () => {
     if (!res) {
       history.push("/login");
     } else {
+      hideSpinner();
       const data = await res.json();
       const itineraries = data.itineraries.map((itin) => {
         return {
@@ -41,31 +45,24 @@ const Itineraries = () => {
     }
   }, []);
   return (
-    <>
+    <Fragment>
+      {loader}
       {locationList.map((loc, index) => {
         return (
           <Card>
-            <ul key={loc.id}>
-              <li>
+            <ul>
+              <li key={loc.id}>
                 <div>
                   <h1>Itinerary {index + 1}</h1>
                   <span>{loc.activities.length} activities</span>
                 </div>
-                <div>
-                  <button type="button" onClick={() => setShowDetails(true)}>
-                    Details
-                  </button>
-                </div>
-                <Activities
-                  activities={loc.activities}
-                  showDetails={showDetails}
-                ></Activities>
+                <Activities activities={loc.activities}></Activities>
               </li>
             </ul>
           </Card>
         );
       })}
-    </>
+    </Fragment>
   );
 };
 export default Itineraries;

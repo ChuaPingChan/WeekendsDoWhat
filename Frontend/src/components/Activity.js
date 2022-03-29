@@ -2,6 +2,10 @@ import { Fragment, useState } from "react";
 import Card from "../Layout/Card";
 import Modal from "../UI/Modal";
 import { Constants } from "../Utils/Constants";
+import classes from "./Activity.module.css";
+import { FaStar } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import Review from "./Review";
 
 const Activity = (props) => {
   const activity = props.activity;
@@ -9,12 +13,23 @@ const Activity = (props) => {
     useState(false);
   const [imageUrl, setImageUrl] = useState("");
   const [placeDetails, setplaceDetails] = useState();
+  const [showAddReview, setShowAddReview] = useState(false);
 
+  const isPremium = useSelector((state) => {
+    return state.isPremium;
+  });
   const showActivityDetails = async () => {
     const res = await getImageDetails();
     const imageBlob = await res.blob();
-    const imageObjectURL = URL.createObjectURL(imageBlob);
-    setImageUrl(imageObjectURL);
+    var encodedResponse = btoa(imageBlob);
+
+    // var img = new Image();
+    // var container = document.getElementById("newImg");
+    const url = "data:image/jpeg;base64," + encodedResponse;
+    setImageUrl(url);
+    // const imageBlob = await res.blob();
+    // const imageObjectURL = URL.createObjectURL(imageBlob);
+    // setImageUrl(imageObjectURL);
     const placeDetails = await getPlaceDetails();
     setplaceDetails(placeDetails);
     setShowActivityDetailsModal(true);
@@ -29,8 +44,11 @@ const Activity = (props) => {
 
   const getImageDetails = async () => {
     const url = `${Constants.api_endpoint}/place_image?place_id=${activity.id}`;
-    const res = await fetch(url);
+    const res = await fetch(url, {});
     return res;
+  };
+  const handleAfterSubmitReview = () => {
+    setShowAddReview(false);
   };
   return (
     <Fragment>
@@ -46,45 +64,53 @@ const Activity = (props) => {
       </Card>
       {showActivityDetailsModal && (
         <Modal>
-          <img url={imageUrl}></img>
-          {/* <div className={classes.text}>
-            <span
-              style={{
-                fontSize: "30px",
-                fontWeight: "bold",
-              }}
-            >
-              Do you want to be a premium user?
-            </span>
+          {/* <img src={imageUrl}></img> */}
+          <div className={classes.header}>
+            <h1 className={classes["header-content"]}>{placeDetails.name}</h1>
           </div>
-          <div className={classes.actions}>
-            <button
-              className={classes["button--alt"]}
-              onClick={setUserToPremium}
-            >
-              Yes
-            </button>
-            <button
-              className={classes["button--alt"]}
-              onClick={() => setShowModal(false)}
-            >
-              No
-            </button>
-          </div> */}
-          <div>
-            <h1>{placeDetails.name}</h1>
-            <p>{placeDetails.address}</p>
+          {!showAddReview && (
             <div>
-              <span>Rating</span>
-              <p>{placeDetails.rating}</p>
+              <p>{placeDetails.address}</p>
+              <div>
+                <p>{placeDetails.rating}</p>
+                <FaStar color="#FFC300"></FaStar>
+              </div>
+              {isPremium && (
+                <div>
+                  <button type="button" onClick={() => setShowAddReview(true)}>
+                    Add a review
+                  </button>
+                </div>
+              )}
+              {placeDetails.reviews.length > 0 && (
+                <div>
+                  <h3>Reviews:</h3>
+                  {placeDetails.reviews.map((review) => {
+                    return <Card></Card>;
+                  })}
+                </div>
+              )}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={() => setShowActivityDetailsModal(false)}
+                >
+                  Close
+                </button>
+              </div>
             </div>
-            <button
-              type="button"
-              onClick={() => setShowActivityDetailsModal(false)}
-            >
-              Close
-            </button>
-          </div>
+          )}
+          {showAddReview && (
+            <Review
+              placeId={activity.id}
+              afterSubmit={handleAfterSubmitReview}
+            ></Review>
+          )}
         </Modal>
       )}
     </Fragment>

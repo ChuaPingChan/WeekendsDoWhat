@@ -60,7 +60,7 @@ const Home = () => {
       },
     });
     if (res) {
-      const data = await res.json();
+      // const data = await res.json();
       setShowModal(false);
     }
   };
@@ -110,8 +110,17 @@ const Home = () => {
           Where do you want to go?
         </h1>
         <Select options={locations} onChange={handleChangeInput}></Select>
-        <div>
-          <button className={classes.search} type="text" onClick={handleSearch}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <button
+            className={classes.searchButton}
+            type="button"
+            onClick={handleSearch}
+          >
             Search
           </button>
         </div>
