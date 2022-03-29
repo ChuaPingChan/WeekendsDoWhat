@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorStatus, setErrorStatus] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
   const handleSubmit = async (e) => {
@@ -22,7 +23,12 @@ const Login = () => {
         "Content-Type": "application/json",
       },
     });
+    if (!res.ok) {
+      setErrorStatus(true);
+      return;
+    }
     if (res) {
+      setErrorStatus(false);
       const data = await res.json();
       localStorage.setItem("token", data.access_token);
       dispatch({ type: "setPremiumUserState", isPremium: data.is_premium });
@@ -37,6 +43,16 @@ const Login = () => {
             margin: "20px 25px 0px 0px",
           }}
         >
+          {errorStatus && (
+            <p
+              style={{
+                color: "red",
+                marginBottom: "30px",
+              }}
+            >
+              Incorrect email or password
+            </p>
+          )}
           <div className="inputbox">
             <input
               type="email"

@@ -1,21 +1,11 @@
-.search {
-    width: 130px;
-    height: 35px;
-    border: 1px solid;
-    border-radius: 6px;
-    margin-top: 20px;
-}
-.search:hover {
-    background: linear-gradient(45deg, greenyellow, dodgerblue);
-}
 .actions {
-    display: flex;
-    margin-top: 32px;
-    justify-content: center;
+  display: flex;
+  margin-top: 32px;
+  justify-content: center;
 }
 .text {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 .actions button {
   font: inherit;
@@ -34,4 +24,17 @@
   background-color: #5a1a01;
   border-color: #5a1a01;
   color: white;
+}
+.searchButton {
+  width: 50%;
+  background: dodgerblue;
+  color: #fff;
+  border: #fff;
+  width: 130px;
+  height: 35px;
+  border-radius: 6px;
+  margin-top: 20px;
+}
+.searchButton:hover {
+  background: linear-gradient(45deg, greenyellow, dodgerblue);
 }
