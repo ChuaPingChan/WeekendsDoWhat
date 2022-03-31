@@ -4,7 +4,6 @@ import Modal from "../UI/Modal";
 import { Constants } from "../Utils/Constants";
 import classes from "./Activity.module.css";
 import { FaStar } from "react-icons/fa";
-import { useSelector } from "react-redux";
 import Review from "./Review";
 
 const Activity = (props) => {
@@ -15,9 +14,7 @@ const Activity = (props) => {
   const [placeDetails, setplaceDetails] = useState();
   const [showAddReview, setShowAddReview] = useState(false);
 
-  const isPremium = useSelector((state) => {
-    return state.isPremium;
-  });
+  const isPremium = props.isPremium;
   const showActivityDetails = async () => {
     const res = await getImageDetails();
     const imageBlob = await res.blob();

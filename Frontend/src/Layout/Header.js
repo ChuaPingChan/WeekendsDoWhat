@@ -3,8 +3,8 @@ import classes from "./Header.module.css";
 import { NavLink } from "react-router-dom";
 import logo from '../logo-white.png'
 
-const LoginLogoutSignup = () => {
-  if (localStorage.getItem("token") === null) {
+const LoginLogoutSignup = (props) => {
+  if (!props.state.isLoggedIn) {
     return  <nav>
               <ul>
                 <li>
@@ -32,7 +32,7 @@ const LoginLogoutSignup = () => {
   }
 }
 
-const Header = () => {
+const Header = (props) => {
   return (
     <React.Fragment>
       <header className={classes.header}>
@@ -47,7 +47,7 @@ const Header = () => {
         >
           WeekendsDoWhat
         </h1>
-        <LoginLogoutSignup></LoginLogoutSignup>
+        <LoginLogoutSignup state={props.state}></LoginLogoutSignup>
       </header>
     </React.Fragment>
   );
