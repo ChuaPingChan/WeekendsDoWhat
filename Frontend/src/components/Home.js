@@ -98,9 +98,10 @@ const Home = (props) => {
       <div
         style={{
           position: "absolute",
-          top: "200px",
+          top: "50%",
           width: "400px",
-          left: "550px",
+          left: "50%",
+          transform: "translate(-50%, -50%)"
         }}
       >
         <h1
