@@ -17,6 +17,10 @@ const Home = (props) => {
 
   const isPremium = props.isPremium;
 
+  if (!props.state.isLoggedIn) {
+    history.push("/login");
+  }
+
   useEffect(async () => {
     const res = await fetch(`${Constants.api_endpoint}/all_districts`, {
       method: "GET",

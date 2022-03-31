@@ -56,7 +56,7 @@ class App extends React.Component {
               <Signup></Signup>
             </Route>
             <Route path="/home" exact>
-              <Home></Home>
+              <Home state={this.state}></Home>
             </Route>
             <Route path="/itineraries/:location">
               <Itineraries></Itineraries>
