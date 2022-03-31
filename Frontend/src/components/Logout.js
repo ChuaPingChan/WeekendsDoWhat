@@ -1,6 +1,4 @@
-import Card from "../Layout/Card";
 import React, { useState } from "react";
-import "./Logout.css";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { Redirect } from "react-router-dom";
 
