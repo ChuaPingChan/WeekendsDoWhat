@@ -38,3 +38,8 @@
 .searchButton:hover {
   background: linear-gradient(45deg, greenyellow, dodgerblue);
 }
+.ad
+{
+  float:right;
+  background-color:gray;
+}

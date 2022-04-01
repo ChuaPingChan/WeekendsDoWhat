@@ -132,6 +132,7 @@ const Home = (props) => {
         )}
         
       </div> */}
+      <div className="ad"><script src="https://s3-us-west-2.amazonaws.com/kaboodle/kaboodle.js" type="text/javascript"></script></div>
     </React.Fragment>
   );
 };
