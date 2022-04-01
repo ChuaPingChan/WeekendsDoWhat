@@ -59,8 +59,6 @@ class App extends React.Component {
         console.log('User is logged in')
       })
       .catch(err => console.log(err));
-      console.log('Final App state')
-      console.log(this.state)
     }
 
     return (
