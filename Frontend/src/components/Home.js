@@ -40,7 +40,9 @@ const Home = (props) => {
     }
   }, []);
   const handleSearch = () => {
-    history.push(`/itineraries/${location.value}`);
+    if (location.value) {
+      history.push(`/itineraries/${location.value}`);
+    }
   };
   const handleChangeInput = (e) => {
     setLocation({
