@@ -15,7 +15,7 @@ const Home = (props) => {
   // const [isPremium, setIsPremium] = useState(false);
   const [showModal, setShowModal] = useState(true);
 
-  const isPremium = props.isPremium;
+  const isPremium = props.state.isPremium;
 
   if (!props.state.isLoggedIn) {
     history.push("/login");
