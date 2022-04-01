@@ -27,7 +27,7 @@ const Activities = (props) => {
       {showDetails && (
         <Card>
           {props.activities.map((activity) => {
-            return <Activity activity={activity}></Activity>;
+            return <Activity activity={activity} state={props.state}></Activity>;
           })}
         </Card>
       )}
