@@ -207,6 +207,21 @@ def user_is_premium(user_email):
 def index():
     return jsonify({ 'msg': 'This is the server of WeekendsDoWhat' })
 
+@app.route("/get_user_info", methods=["GET"])
+@jwt_required()
+def get_user_info():
+    user_email = get_jwt_identity()
+
+    user_matched = User.query.filter_by(email=user_email).first()
+    if not user_matched:
+        return ('User is not logged in', 401)
+
+    return {
+        'email': user_matched.email,
+        'username': user_matched.username,
+        'is_premium': user_matched.premium
+    }
+
 # TODO: Use SSL to secure data in POST request
 # Create a route to authenticate your users and return JWTs. The
 # create_access_token() function is used to actually generate the JWT.
