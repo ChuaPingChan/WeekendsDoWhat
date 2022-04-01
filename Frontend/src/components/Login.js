@@ -3,14 +3,15 @@ import React, { useState } from "react";
 import "./Login.css";
 import { Constants } from "../Utils/Constants";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useDispatch } from "react-redux";
 
-const Login = (props) => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorStatus, setErrorStatus] = useState(false);
   const history = useHistory();
-
-  const handleLogin = async (e) => {
+  const dispatch = useDispatch();
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await fetch(`${Constants.api_endpoint}/login`, {
       method: "POST",
@@ -30,11 +31,10 @@ const Login = (props) => {
       setErrorStatus(false);
       const data = await res.json();
       localStorage.setItem("token", data.access_token);
-      props.handleUserLogin(data.is_premium);
+      dispatch({ type: "setPremiumUserState", isPremium: data.is_premium });
       history.push("/home");
     }
   };
-
   return (
     <div className="Login">
       <Card>
@@ -72,7 +72,7 @@ const Login = (props) => {
             <span>Password</span>
           </div>
           <div className="inputbox">
-            <input type="button" value="Login" onClick={handleLogin} />
+            <input type="button" value="Login" onClick={handleSubmit} />
           </div>
         </form>
       </Card>

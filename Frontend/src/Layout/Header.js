@@ -1,38 +1,9 @@
 import React from "react";
 import classes from "./Header.module.css";
+import bgImage from "../assets/background_image.jpg";
 import { NavLink } from "react-router-dom";
 import logo from '../logo-white.png'
-
-const LoginLogoutSignup = (props) => {
-  if (!props.state.isLoggedIn) {
-    return  <nav>
-              <ul>
-                <li>
-                  <NavLink activeClassName={classes.active} to="/login">
-                    Login
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink activeClassName={classes.active} to="/signup">
-                    Signup
-                  </NavLink>
-                </li>
-              </ul>
-            </nav>;
-  } else {
-    return  <nav>
-              <ul>
-                <li>
-                  <NavLink activeClassName={classes.active} to="/logout">
-                    Logout
-                  </NavLink>
-                </li>
-              </ul>
-            </nav>;
-  }
-}
-
-const Header = (props) => {
+const Header = () => {
   return (
     <React.Fragment>
       <header className={classes.header}>
@@ -47,7 +18,20 @@ const Header = (props) => {
         >
           WeekendsDoWhat
         </h1>
-        <LoginLogoutSignup state={props.state}></LoginLogoutSignup>
+        <nav>
+          <ul>
+            <li>
+              <NavLink activeClassName={classes.active} to="/login">
+                Login
+              </NavLink>
+            </li>
+            <li>
+              <NavLink activeClassName={classes.active} to="/signup">
+                Signup
+              </NavLink>
+            </li>
+          </ul>
+        </nav>
       </header>
     </React.Fragment>
   );

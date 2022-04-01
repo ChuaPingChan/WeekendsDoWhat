@@ -4,8 +4,9 @@ import Select from "react-select";
 import Modal from "../UI/Modal";
 import { Constants } from "../Utils/Constants";
 import classes from "./Home.module.css";
+import { useSelector } from "react-redux";
 
-const Home = (props) => {
+const Home = () => {
   const [locations, setLocations] = useState([]);
   const [location, setLocation] = useState({
     label: "",
@@ -15,11 +16,9 @@ const Home = (props) => {
   // const [isPremium, setIsPremium] = useState(false);
   const [showModal, setShowModal] = useState(true);
 
-  const isPremium = props.isPremium;
-
-  if (!props.state.isLoggedIn) {
-    history.push("/login");
-  }
+  const isPremium = useSelector((state) => {
+    return state.isPremium;
+  });
 
   useEffect(async () => {
     const res = await fetch(`${Constants.api_endpoint}/all_districts`, {
