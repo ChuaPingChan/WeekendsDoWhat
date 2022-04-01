@@ -20,6 +20,8 @@ class App extends React.Component {
     }
 
     this.handleUserLogin = this.handleUserLogin.bind(this);
+    this.handleUserLogout = this.handleUserLogout.bind(this);
+
   }
 
   handleUserLogin = (isPremiumOrNot) => {
@@ -37,7 +39,11 @@ class App extends React.Component {
   }
 
   render () {
-    if (!this.state.isLoggedIn) {
+
+    console.log('App: Starting up...')
+
+    // Check if the auth token from last session is still valid or not
+    if (!(this.state.isLoggedIn && localStorage.getItem("token"))) {
       fetch(`${Constants.api_endpoint}/get_user_info`, {
         method: "GET",
         headers: {
@@ -48,15 +54,15 @@ class App extends React.Component {
         if (response.status === 200){
           return response.json()
         } else {
-          throw new Error('User is not logged in');
+          throw new Error('App: User is not logged in');
         }
       })
       .then(data => {
+        console.log('App: User is logged in')
         this.setState({
           isPremium: data.is_premium,
           isLoggedIn: true
         });
-        console.log('User is logged in')
       })
       .catch(err => console.log(err));
     }

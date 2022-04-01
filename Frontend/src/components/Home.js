@@ -17,17 +17,13 @@ const Home = (props) => {
 
   const isPremium = props.state.isPremium;
 
-  if (!props.state.isLoggedIn) {
+  if (!localStorage.getItem("token")) {
     history.push("/login");
   }
 
   useEffect(async () => {
     const res = await fetch(`${Constants.api_endpoint}/all_districts`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        "Content-Type": "application/json",
-      },
+      method: "GET"
     });
     if (res) {
       const data = await res.json();
