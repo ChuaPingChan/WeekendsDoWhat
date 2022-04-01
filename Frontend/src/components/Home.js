@@ -132,7 +132,35 @@ const Home = (props) => {
         )}
         
       </div> */}
-      <div className="ad"><script src="https://s3-us-west-2.amazonaws.com/kaboodle/kaboodle.js" type="text/javascript"></script></div>
+
+      {/* <div>
+        <div className="ad">
+          <script data-num-rows="3" src="https://s3-us-west-2.amazonaws.com/kaboodle/kaboodle.js" type="text/javascript"></script>
+          <div class="kaboodle-module">
+            <a class="kaboodle-header" href="https://github.com/ptsteadman/kaboodle">Sponsored Links By Kaboodle</a>
+            <div class="kaboodle-items">
+              <a href="http://www.fool.com/video-alert/stock-advisor/sa-nightmare-gfx/">
+                <div class="kaboodle-item">
+                  <img src="https://s3-us-west-2.amazonaws.com/kaboodle/creatives/buffet.jpg" />
+                  <p>4 in 5 Americans Are Ignoring Buffet's Warning</p>
+                </div>
+              </a>
+              <a href="http://elitedaily.com/life/satisfied-people-dont-wait-want-go-get">
+                <div class="kaboodle-item">
+                  <img src="https://s3-us-west-2.amazonaws.com/kaboodle/creatives/genius.jpg" />
+                  <p>10 Tips To Learn Any Language From The Genius Who Speaks 9</p>
+                </div>
+              </a>
+              <a href="http://elitedaily.com/humor/who-is-this-text-most-insulting-text-video/">
+                <div class="kaboodle-item">
+                  <img src="https://s3-us-west-2.amazonaws.com/kaboodle/creatives/whois.jpg" />
+                  <p>Why 'Who Is This?' Is Literally The Most Insulting Test Ever (Video)</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div> */}
     </React.Fragment>
   );
 };
