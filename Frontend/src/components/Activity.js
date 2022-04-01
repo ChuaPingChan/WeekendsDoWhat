@@ -14,7 +14,8 @@ const Activity = (props) => {
   const [placeDetails, setplaceDetails] = useState();
   const [showAddReview, setShowAddReview] = useState(false);
 
-  const isPremium = props.isPremium;
+  const isPremium = props.state.isPremium;
+  console.log(`Activity: ${isPremium}`)
   const showActivityDetails = async () => {
     const res = await getImageDetails();
     const imageBlob = await res.blob();

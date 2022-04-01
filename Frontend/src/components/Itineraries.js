@@ -5,7 +5,7 @@ import useFullPageSpinner from "../hooks/useFullPageSpinner";
 import Card from "../Layout/Card";
 import { Constants } from "../Utils/Constants";
 import Activities from "./Activities";
-const Itineraries = () => {
+const Itineraries = (props) => {
   const [locationList, setLocationList] = useState([]);
 
   const [loader, showSpinner, hideSpinner] = useFullPageSpinner();
@@ -56,7 +56,7 @@ const Itineraries = () => {
                   <h1>Itinerary {index + 1}</h1>
                   <span>{loc.activities.length} activities</span>
                 </div>
-                <Activities activities={loc.activities}></Activities>
+                <Activities activities={loc.activities} state={props.state}></Activities>
               </li>
             </ul>
           </Card>

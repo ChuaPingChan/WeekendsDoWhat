@@ -59,7 +59,7 @@ class App extends React.Component {
               <Home state={this.state}></Home>
             </Route>
             <Route path="/itineraries/:location">
-              <Itineraries></Itineraries>
+              <Itineraries state={this.state}></Itineraries>
             </Route>
           </Switch>
         </div>
