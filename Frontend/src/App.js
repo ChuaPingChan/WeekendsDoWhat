@@ -9,6 +9,7 @@ import Home from "./components/Home";
 import { Switch } from "react-router-dom";
 import { Redirect } from "react-router-dom";
 import Itineraries from "./components/Itineraries";
+import { Constants } from "./Utils/Constants";
 
 class App extends React.Component {
   constructor () {
@@ -36,6 +37,30 @@ class App extends React.Component {
   }
 
   render () {
+    if (!this.state.isLoggedIn) {
+      fetch(`${Constants.api_endpoint}/get_user_info`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        },
+      })
+      .then(response => {
+        if (response.status === 200){
+          return response.json()
+        } else {
+          throw new Error('User is not logged in');
+        }
+      })
+      .then(data => {
+        this.setState({
+          isPremium: data.is_premium,
+          isLoggedIn: true
+        });
+        console.log('User is logged in')
+      })
+      .catch(err => console.log(err));
+    }
+
     return (
       <React.Fragment>
         <div>
