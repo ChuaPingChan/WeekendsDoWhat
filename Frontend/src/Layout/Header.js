@@ -40,6 +40,7 @@ const Header = (props) => {
           src={logo}
           className="d-inline-block align-top"
         />
+        <a href="/home">
         <h1
           style={{
             marginLeft: "50px",
@@ -47,6 +48,7 @@ const Header = (props) => {
         >
           WeekendsDoWhat
         </h1>
+        </a>
         <LoginLogoutSignup state={props.state}></LoginLogoutSignup>
       </header>
     </React.Fragment>
