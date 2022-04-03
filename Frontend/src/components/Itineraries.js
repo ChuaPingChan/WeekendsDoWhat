@@ -62,7 +62,7 @@ const Itineraries = (props) => {
               <li key={loc.id}>
                 <div>
                   <h1>Itinerary {index + 1}</h1>
-                  <span>{loc.activities.length} activities</span>
+                  {/* <span>{loc.activities.length} activities</span> */}
                 </div>
                 <Activities activities={loc.activities} state={props.state}></Activities>
               </li>
