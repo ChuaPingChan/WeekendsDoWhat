@@ -12,59 +12,57 @@ import Itineraries from "./components/Itineraries";
 import { Constants } from "./Utils/Constants";
 
 class App extends React.Component {
-  constructor () {
+  constructor() {
     super();
     this.state = {
       isPremium: false,
-      isLoggedIn: false
-    }
+      isLoggedIn: false,
+    };
 
     this.handleUserLogin = this.handleUserLogin.bind(this);
     this.handleUserLogout = this.handleUserLogout.bind(this);
-
   }
 
   handleUserLogin = (isPremiumOrNot) => {
     this.setState({
       isPremium: isPremiumOrNot,
-      isLoggedIn: true
-    })
-  }
+      isLoggedIn: true,
+    });
+  };
 
   handleUserLogout = () => {
     this.setState({
       isPremium: false,
-      isLoggedIn: false
-    })
-  }
+      isLoggedIn: false,
+    });
+  };
 
-  render () {
-
-    console.log('App: Starting up...')
+  render() {
+    console.log("App: Starting up...");
 
     // Check if the auth token from last session is still valid or not
     if (!(this.state.isLoggedIn && localStorage.getItem("token"))) {
       fetch(`${Constants.api_endpoint}/get_user_info`, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       })
-      .then(response => {
-        if (response.status === 200){
-          return response.json()
-        } else {
-          throw new Error('App: User is not logged in');
-        }
-      })
-      .then(data => {
-        console.log('App: User is logged in')
-        this.setState({
-          isPremium: data.is_premium,
-          isLoggedIn: true
-        });
-      })
-      .catch(err => console.log(err));
+        .then((response) => {
+          if (response.status === 200) {
+            return response.json();
+          } else {
+            throw new Error("App: User is not logged in");
+          }
+        })
+        .then((data) => {
+          console.log("App: User is logged in");
+          this.setState({
+            isPremium: data.is_premium,
+            isLoggedIn: true,
+          });
+        })
+        .catch((err) => console.log(err));
     }
 
     return (

@@ -54,52 +54,77 @@ const Itineraries = (props) => {
   return (
     <Fragment>
       {loader}
-      <div>
-      {locationList.map((loc, index) => {
-        return (
-          <Card>
-            <ul>
-              <li key={loc.id}>
-                <div>
-                  <h1>Itinerary {index + 1}</h1>
-                  {/* <span>{loc.activities.length} activities</span> */}
-                </div>
-                <Activities activities={loc.activities} state={props.state}></Activities>
-              </li>
-            </ul>
-          </Card>
-        );
-      })}
-      </div>
-
-      {/* Fake ads */}
-      <div className={classes.ads}>
-        <div>
-          <script data-num-rows="3" src="https://s3-us-west-2.amazonaws.com/ads/ads.js" type="text/javascript"></script>
-          <div className={classes.adsModule}>
-            <div className="adsItems">
-              {/* <a href="http://www.fool.com/video-alert/stock-advisor/sa-nightmare-gfx/"> */}
-              <div className={classes.adsItem}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          width: "100%",
+          marginTop: "80px",
+        }}
+      >
+        <div
+          style={{
+            flexGrow: "1",
+          }}
+        >
+          {locationList.map((loc, index) => {
+            return (
+              <Card>
+                <ul>
+                  <li key={loc.id}>
+                    <div>
+                      <h1>Itinerary {index + 1}</h1>
+                      {/* <span>{loc.activities.length} activities</span> */}
+                    </div>
+                    <Activities
+                      activities={loc.activities}
+                      state={props.state}
+                    ></Activities>
+                  </li>
+                </ul>
+              </Card>
+            );
+          })}
+        </div>
+        <div className={classes.ads}>
+          <div>
+            <script
+              data-num-rows="3"
+              src="https://s3-us-west-2.amazonaws.com/ads/ads.js"
+              type="text/javascript"
+            ></script>
+            <div className={classes.adsModule}>
+              <div className="adsItems">
+                {/* <a href="http://www.fool.com/video-alert/stock-advisor/sa-nightmare-gfx/"> */}
+                <div className={classes.adsItem}>
                   <img src={buffet} />
                   <p>4 in 5 Americans Are Ignoring Buffet's Warning</p>
                 </div>
-              {/* </a> */}
-              {/* <a href="http://elitedaily.com/life/satisfied-people-dont-wait-want-go-get"> */}
+                {/* </a> */}
+                {/* <a href="http://elitedaily.com/life/satisfied-people-dont-wait-want-go-get"> */}
                 <div className={classes.adsItem}>
                   <img src={genius} />
-                  <p>10 Tips To Learn Any Language From The Genius Who Speaks 9</p>
+                  <p>
+                    10 Tips To Learn Any Language From The Genius Who Speaks 9
+                  </p>
                 </div>
-              {/* </a> */}
-              {/* <a href="http://elitedaily.com/humor/who-is-this-text-most-insulting-text-video/"> */}
-              <div className={classes.adsItem}>
+                {/* </a> */}
+                {/* <a href="http://elitedaily.com/humor/who-is-this-text-most-insulting-text-video/"> */}
+                <div className={classes.adsItem}>
                   <img src={whois} />
-                  <p>Why 'Who Is This?' Is Literally The Most Insulting Test Ever (Video)</p>
+                  <p>
+                    Why 'Who Is This?' Is Literally The Most Insulting Test Ever
+                    (Video)
+                  </p>
                 </div>
-              {/* </a> */}
+                {/* </a> */}
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Fake ads */}
     </Fragment>
   );
 };

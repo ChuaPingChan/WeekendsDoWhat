@@ -23,7 +23,11 @@ const Home = (props) => {
 
   useEffect(async () => {
     const res = await fetch(`${Constants.api_endpoint}/all_districts`, {
-      method: "GET"
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
     });
     if (res) {
       const data = await res.json();
@@ -99,7 +103,7 @@ const Home = (props) => {
           top: "50%",
           width: "400px",
           left: "50%",
-          transform: "translate(-50%, -50%)"
+          transform: "translate(-50%, -50%)",
         }}
       >
         <h1
