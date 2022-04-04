@@ -1,0 +1,64 @@
+%% packages
+
+\usepackage{blindtext} % needed for creating dummy text passages
+\usepackage{amsmath} % needed for command eqref
+\usepackage{amssymb} % needed for math fonts
+
+\usepackage{pifont}% For ticks and crosses as defined in the newcommands below. More info at http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[
+	colorlinks=false,	% color links
+	breaklinks %in case some labels are too long and may span several pages, e.g. in List of Figures, etc.
+	]{hyperref} % needed for creating hyperlinks in the document, the option colorlinks=true gets rid of the awful boxes, breaklinks breaks long links (list of figures), and ngerman sets everything for german as default hyperlinks language
+\usepackage[hyphenbreaks]{breakurl} % ben�tigt f�r das Brechen von URLs in Literaturreferenzen, hyphenbreaks auch bei links, die �ber eine Seite gehen (mit hyphenation).
+
+\usepackage{xcolor}
+\definecolor{c1}{rgb}{0,0,1} % blue
+\definecolor{c2}{rgb}{0,0.3,0.9} % light blue
+\definecolor{c3}{rgb}{0.3,0,0.9} % red blue
+%\hypersetup{
+%    linkcolor={c1}, % internal links
+%    citecolor={c2}, % citations
+%    urlcolor={c3} % external links/urls
+%}
+
+%\usepackage{cite} % needed for cite
+\usepackage[round,authoryear]{natbib} % needed for cite and abbrvnat bibliography style
+\usepackage[nottoc]{tocbibind} % needed for displaying table of contents, bibliography, index and other in the table of contents. 'nottoc' is to exclude the phreases "table of contents" from the table of contents.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{graphicx} % needed for \includegraphics
+\usepackage{subcaption} % for creating subfigures (side-by-side) and captioning them
+\usepackage{float}	% to insert tables at precise position of code with [H] specifier.
+\usepackage{longtable} % needed for long tables over pages
+\usepackage{bigstrut} % needed for the command \bigstrut
+\usepackage{enumerate} % needed for some options in enumerate
+\usepackage{todonotes} % needed for todos
+\usepackage{makeidx} % needed for creating an index
+\makeindex
+\usepackage{color}
+\usepackage{siunitx} % for commonly used SI unit symbols with command SI{value}{unit}, SIrage, etc.
+\usepackage{pdfpages} % for inserting pdf pages with command \includepdf{<filename>}
+\usepackage{listings} % to insert source code of any programming language
+\lstset{
+basicstyle=\footnotesize,
+frame=single,
+numbers=left,
+keepspaces=true,
+breaklines=true,
+%commentstyle=\color[rgb]{0,0.6,0},
+%keywordstyle=\color{blue},
+%stringstyle=\color[rgb]{0.8,0,0}
+}
+\usepackage{ulem} % for strike-through text using the \sout command
+
+% For pseudocodes
+%\usepackage{algorithm}
+%
+%\usepackage{algpseudocode}
+%\algtext*{EndFor}% Remove "end for" text
+%\algtext*{EndWhile}% Remove "end while" text
+%\algtext*{EndIf}% Remove "end if" text
