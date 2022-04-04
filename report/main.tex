@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% document class
-\documentclass[a4paper]{article}
+\documentclass[12pt]{article}
 
 %% packages
 \input{settings/packages}
@@ -33,7 +33,7 @@
 \tableofcontents
 
 % Set font size to 12pt
-\fontsize{12}{1.2}
+% \fontsize{12}{1.2}
 
 \newpage
 \section{Executive Summary}
@@ -167,15 +167,15 @@ The total cost of this server would be 3588.06 dollars, which is 2.48 times the 
         \label{section-aws-services-deployed}
         \subsubsection{AWS Services Deployed}
         
-        For readability, we will \todo{bold appears too exaggerated in LaTeX}emphasise the font of the AWS services we utilized for our SaaS application.
+        For readability, we will bold the font of the AWS services we utilized for our SaaS application.
 
-        For our SaaS application deployment, we use AWS services extensively from end-to-end. We set up our \emph{Virtual Private Cloud (VPC)} within the ap-southeast-1 region, Singapore, as our targeted users are people exploring places in Singapore and attached an \emph{Internet gateway (IGW)} to our VPC for public access.
+        For our SaaS application deployment, we use AWS services extensively from end-to-end. We set up our \textbf{Virtual Private Cloud (VPC)} within the ap-southeast-1 region, Singapore, as our targeted users are people exploring places in Singapore and attached an \textbf{Internet gateway (IGW)} to our VPC for public access.
         
-        Within the VPC, we set up two \emph{Elastic Beanstalk} to host our frontend and backend application. We also configured the \emph{Auto scaling group} in our elastic beanstalks to spread across two \emph{Availability Zones (AZ)}, illustrated with yellow dotted lines, zone 1a and 1b, with minimum instances count of 2 to ensure there is one EC2 instance in each AZ. The \emph{S3 bucket}, \emph{Load Balancer}, \emph{Security Groups}, illustrated with red dotted lines, and \emph{Cloudwatch} alarms are automatically set up when we launch the elastic beanstalk for our frontend and backend application. Additionally, we configured the security group of the backend application of the elastic beanstalk to only allow ingress traffic for HTTP (port 80) from the frontend’s security group. The S3 bucket is used to archive the application versions deployed on each elastic beanstalk.
+        Within the VPC, we set up two \textbf{Elastic Beanstalk} to host our frontend and backend application. We also configured the \textbf{Auto scaling group} in our elastic beanstalks to spread across two \textbf{Availability Zones (AZ)}, illustrated with yellow dotted lines, zone 1a and 1b, with minimum instances count of 2 to ensure there is one EC2 instance in each AZ. The \textbf{S3 bucket}, \textbf{Load Balancer}, \textbf{Security Groups}, illustrated with red dotted lines, and \textbf{Cloudwatch} alarms are automatically set up when we launch the elastic beanstalk for our frontend and backend application. Additionally, we configured the security group of the backend application of the elastic beanstalk to only allow ingress traffic for HTTP (port 80) from the frontend’s security group. The S3 bucket is used to archive the application versions deployed on each elastic beanstalk.
         
-        AWS provided a compatible range of services which enables our SaaS application to be more secure and most importantly, the basic services we used are free. We created a SSL certificate via the \emph{AWS Certificate Manager} for our frontend elastic beanstalk so that all public traffic will use HTTPS protocol to communicate with our frontend elastic beanstalk. The SSL/TLS certificate provisioned through Certificate Manager is free. CloudTrail is automatically enabled and records every activity occurring in our elastic beanstalks. We can easily view, search, and download recent \emph{CloudTrail} events along with other AWS service events in Event history. \emph{AWS Shield Standard} is also available to provide protection and support high availability for our SaaS application. 
+        AWS provided a compatible range of services which enables our SaaS application to be more secure and most importantly, the basic services we used are free. We created a SSL certificate via the \textbf{AWS Certificate Manager} for our frontend elastic beanstalk so that all public traffic will use HTTPS protocol to communicate with our frontend elastic beanstalk. The SSL/TLS certificate provisioned through Certificate Manager is free. CloudTrail is automatically enabled and records every activity occurring in our elastic beanstalks. We can easily view, search, and download recent \textbf{CloudTrail} events along with other AWS service events in Event history. \textbf{AWS Shield Standard} is also available to provide protection and support high availability for our SaaS application. 
         
-        For our PostgreSQL database, we deployed \emph{Aurora PostgreSQL with multi-AZ} and database deletion protection enabled, having a writer replica in ap-southeast-1a zone and a  reader replica in ap-southeast-1b zone. Security group for our database is automatically created during the initial database creation and we configured additional ingress traffic for RDS (port 5432) from the backend application’s security group on our database’s security group. 
+        For our PostgreSQL database, we deployed \textbf{Aurora PostgreSQL with multi-AZ} and database deletion protection enabled, having a writer replica in ap-southeast-1a zone and a  reader replica in ap-southeast-1b zone. Security group for our database is automatically created during the initial database creation and we configured additional ingress traffic for RDS (port 5432) from the backend application’s security group on our database’s security group. 
         
         \subsubsection{System Considerations}
         
