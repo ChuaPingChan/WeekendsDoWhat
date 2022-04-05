@@ -445,7 +445,7 @@ def add_review():
         return ('Invalid place', 400)
 
     # Update user's review if present
-    query_result = Review.query.filter_by(email=user_email).first()
+    query_result = Review.query.filter_by(email=user_email, place_id=place_id).first()
     if query_result:
         query_result.rating = rating
         query_result.review = review
