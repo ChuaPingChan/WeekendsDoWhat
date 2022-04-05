@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, send_file
-import os, math
+import os, math, random
 import datetime
 
 from flask_jwt_extended import create_access_token
@@ -129,7 +129,6 @@ def get_n_closest_parks(x_coord, y_coord, n=10):
     """
     Returns the n closest parks from the given coordinates
     """
-    # TODO: Improve recommendation later if needed
     dist_to_park = dict()
     for park in Park.query.all():
         park_x_coord = float(park.latitude)
@@ -139,6 +138,37 @@ def get_n_closest_parks(x_coord, y_coord, n=10):
         dist_to_park[distance] = park
 
     return [dist_to_park[k] for k in sorted(dist_to_park)][:n]
+
+def sort_by_place_rating(place_list_in, rating_diff_threshold=1):
+    '''
+    Swap the positions of two consecutive places in the list with 50% probability if the ratings differ by more than the given threshold
+    '''
+
+    place_list_out = place_list_in.copy()
+
+    place_id_to_rating = dict()
+    for place in place_list_out:
+        overall_rating = 4.0
+        review_results = Review.query.filter_by(place_id=place.inc_crc).all()
+        if review_results:
+            overall_rating = sum([review.rating for review in review_results])/len(review_results)
+            print(f'Overall rating of {place.name} is {overall_rating}')
+        place_id_to_rating[place.inc_crc] = overall_rating
+
+    order_changed = True
+    while (order_changed):
+        order_changed = False
+        for i in range(len(place_list_out)-1):
+            place1 = place_list_out[i]
+            place2 = place_list_out[i+1]
+            if place_id_to_rating[place2.inc_crc] - place_id_to_rating[place1.inc_crc] >= rating_diff_threshold:
+                # Swap with 50% probability
+                if random.choice([0, 1]):
+                    print(f'Swapping {place1.name} and {place2.name}')
+                    place_list_out[i], place_list_out[i+1] = place_list_out[i+1], place_list_out[i]
+                    order_changed = True
+
+    return place_list_out
 
 def construct_eating_establishment_address(id):
     ee_db_model = EatingEstablishment.query.filter_by(inc_crc=id).first()
@@ -152,15 +182,15 @@ def get_park_address(id):
         address = geopy_location.address
     return address
 
-def get_n_itineraries(x_coord, y_coord, n=4, show_ratings=False):
+def get_top_n_itineraries(x_coord, y_coord, n=4, show_ratings=False):
     # TODO: Polish itineraries JSON format
     itineraries = []
 
     # TODO: Revise recommendation algo
     # Get the n closest parks, and for each one generate a food->park->food itinerary
-    closest_parks = get_n_closest_parks(x_coord, y_coord, n)
+    closest_parks = sort_by_place_rating(get_n_closest_parks(x_coord, y_coord, n))
     for park in closest_parks:
-        closest_eating_establishments = get_closest_eating_establishments(park.latitude, park.longitude, 2)
+        closest_eating_establishments = sort_by_place_rating(get_closest_eating_establishments(park.latitude, park.longitude, 2))
 
         # TODO: Show ratings only for premium users
         itineraries.append({
@@ -190,7 +220,7 @@ def get_n_itineraries(x_coord, y_coord, n=4, show_ratings=False):
                 }
             ]
         })
-    
+
     return itineraries
 
 def user_is_premium(user_email):
@@ -348,7 +378,7 @@ def place_info():
     user_email = get_jwt_identity()
     if user_email and user_is_premium(user_email):
         # Need to reset it to 0 to calculate the true overall rating
-        overall_rating = 0
+        overall_rating = 4.0
 
         reviews_query_res = Review.query.filter_by(place_id=id).order_by(desc(Review.datetime))
         for review in reviews_query_res:
@@ -362,23 +392,22 @@ def place_info():
             total_num_reviews += 1
             overall_rating = (overall_rating * (total_num_reviews - 1) + review.rating) / total_num_reviews
 
-        # Mock some reviews
-        # TODO: Remove fake reviews
-        hardcoded_review = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-        num_reviews = random.randrange(1, 3)
-        for i in range(num_reviews):
-            review = dict()
-            review['username'] = names.get_full_name()
-            review_length = random.randrange(25, 200)
-            review['review'] = hardcoded_review[:review_length]
-            rand_rating = round(random.randrange(30, 51) * 0.1, 1)
-            review['rating'] = rand_rating
+        # # Mock some reviews
+        # hardcoded_review = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+        # num_reviews = random.randrange(1, 5)
+        # for i in range(num_reviews):
+        #     review = dict()
+        #     review['username'] = names.get_full_name()
+        #     review_length = random.randrange(25, 200)
+        #     review['review'] = hardcoded_review[:review_length]
+        #     rand_rating = round(random.randrange(30, 51) * 0.1, 1)
+        #     review['rating'] = rand_rating
 
-            # Update overall stats
-            total_num_reviews += 1
-            overall_rating = (overall_rating * (total_num_reviews - 1) + review['rating']) / total_num_reviews
+        #     # Update overall stats
+        #     total_num_reviews += 1
+        #     overall_rating = (overall_rating * (total_num_reviews - 1) + review['rating']) / total_num_reviews
 
-            reviews.append(review)
+        #     reviews.append(review)
 
     return {
         'name': place.name,
@@ -406,7 +435,7 @@ def get_itineraries():
     latitude, longitude = location.latitude, location.longitude
 
     response = jsonify({
-        "itineraries": get_n_itineraries(latitude, longitude, n=num_itineraries, show_ratings=user_is_premium(get_jwt_identity()))
+        "itineraries": get_top_n_itineraries(latitude, longitude, n=num_itineraries, show_ratings=user_is_premium(get_jwt_identity()))
     }
     )
     response.headers.add('Access-Control-Allow-Origin', '*')
