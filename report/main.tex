@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% document class
-\documentclass[12pt]{article}
+\documentclass[12pt,a4paper]{article}
 
 %% packages
 \input{settings/packages}
@@ -19,23 +19,79 @@
 \begin{document}
 
 \pagestyle{plain}
-\title{
-    CS5224 Project Final Report\\
-    WeekendsDoWhat
-}
-\author{Chua Ping Chan, Peh Kai Yi Esmond, Pranav, Xi Liming}
-\date{\today}
-\maketitle
-\todo{Do up Title page}
+
+% \title{
+%     CS5224 Project Final Report\\
+%     WeekendsDoWhat
+% }
+% \author{Chua Ping Chan, Peh Kai Yi Esmond, Pranav, Xi Liming}
+% \date{\today}
+% \maketitle
+% \todo{Do up Title page}
+
 %\listoftodos
+
+% \begin{titlepage}
+% 	\centering
+% 	\includegraphics[width=0.35\textwidth]{figures/nus.jpg}\par
+% % 	\vspace{1cm}
+% 	{\scshape\Jacksonville National University of Singapore \par}
+% 	\vspace{1cm}
+% 	{\scshape\Large CS5224 - Cloud Computing\par}
+% 	\vspace{1cm}
+% 	{\huge\bfseries WeekendsDoWhat\par}
+% 	\vspace{1cm}
+% 	{\Large\itshape Chua Ping Chan\par}
+% 	{\Large\itshape Peh Kai Yi Esmond\par}
+% 	{\Large\itshape Pranav\par}
+% 	{\Large\itshape Xi Liming\par}
+% % 	\vfill
+% % 	supervised by\par
+% % 	Dr.~Mark \textsc{Brown}
+
+% 	\vfill
+% % Bottom of the page
+% 	{\large \today\par}
+% \end{titlepage}
+
+\begin{titlepage}
+  \centering
+  
+  \includegraphics[width=0.4\textwidth]{figures/nus.jpg}
+
+%   \vspace{0.5cm}
+  {\LARGE {CS5224 - Cloud Computing} \par}
+  {\Large {AY2021/2022 Semester 2} \par}
+  
+  \vspace{1cm}
+  {\LARGE \bf{WeekendsDoWhat} \par}
+
+  \vspace{1.5cm}
+  {\large \textit{Chua Ping Chan \qquad Peh Kai Yi Esmond \qquad Pranav \qquad Xi Liming} \par}
+  {\hspace{0.6cm} A0126623L \hspace{2.5cm} A0111866E \hspace{1.6cm} A0228503L \hspace{0.6cm} A0224819Y \par}
+%   {\large \textit{Chua Ping Chan} \par}
+%   {\large \textit{Peh Kai Yi Esmond} \par}
+%   {\large \textit{Pranav} \par}
+%   {\large \textit{Xi Liming} \par}
+
+%   {\bf a1817369}
+  
+  \vspace{2cm}
+  \today    
+
+  \vfill
+\end{titlepage}
 
 \renewcommand{\contentsname}{Table of Contents}	% Change heading of TOC
 \tableofcontents
+\thispagestyle{empty}
 
 % Set font size to 12pt
 % \fontsize{12}{1.2}
 
 \newpage
+\setcounter{page}{1}
+
 \section{Executive Summary}
 
 Our SaaS aims to provide local Singaporeans itineraries given a certain location. Unlike other existing services like Google Map and TripAdvisor that only provide information for a single searched location, we provide recommendations of nearby restaurants if users searched for a national park, or vice versa. We require all users to create an account so that we could control spam contents. Moreover, we encourage users to actively leave detailed reviews for our provided itineraries so that we could create authoritative and authentic rankings of parks and restaurants, which makes our database attractive enough to charge premium users monthly fee to access these reviews. Currently, we couldn’t find such online communities or applications providing similar services in Singapore. Thus, we think our SaaS could fill the gap for such needs. 
