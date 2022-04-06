@@ -139,6 +139,14 @@ def get_n_closest_parks(x_coord, y_coord, n=10):
 
     return [dist_to_park[k] for k in sorted(dist_to_park)][:n]
 
+def get_place_overall_rating(place_id):
+    overall_rating = 4.0
+    review_results = Review.query.filter_by(place_id=place_id).all()
+    if review_results:
+        overall_rating = sum([review.rating for review in review_results])/len(review_results)
+    return overall_rating
+
+
 def sort_by_place_rating(place_list_in, rating_diff_threshold=1):
     '''
     Swap the positions of two consecutive places in the list with 50% probability if the ratings differ by more than the given threshold
@@ -148,11 +156,7 @@ def sort_by_place_rating(place_list_in, rating_diff_threshold=1):
 
     place_id_to_rating = dict()
     for place in place_list_out:
-        overall_rating = 4.0
-        review_results = Review.query.filter_by(place_id=place.inc_crc).all()
-        if review_results:
-            overall_rating = sum([review.rating for review in review_results])/len(review_results)
-            print(f'Overall rating of {place.name} is {overall_rating}')
+        overall_rating = get_place_overall_rating(place.inc_crc)
         place_id_to_rating[place.inc_crc] = overall_rating
 
     order_changed = True
@@ -202,21 +206,21 @@ def get_top_n_itineraries(x_coord, y_coord, n=4, show_ratings=False):
                     'address': construct_eating_establishment_address(closest_eating_establishments[0].inc_crc),
                     # TODO: Return rating only if user is a premium user
                     # TODO: Add rating column to places DB and update them for each review
-                    'rating': round(random.randrange(30, 51) * 0.1, 1)
+                    'rating': get_place_overall_rating(closest_eating_establishments[0].inc_crc)
                 },
                 {
                     'place_id': park.inc_crc,
                     'place_type': 'park',
                     'name': park.name,
                     'address': get_park_address(park.inc_crc),
-                    'rating': round(random.randrange(30, 51) * 0.1, 1)
+                    'rating': get_place_overall_rating(park.inc_crc)
                 },
                 {
                     'place_id': closest_eating_establishments[1].inc_crc,
                     'place_type': 'food',
                     'name': closest_eating_establishments[1].name,
                     'address': construct_eating_establishment_address(closest_eating_establishments[1].inc_crc),
-                    'rating': round(random.randrange(30, 51) * 0.1, 1)
+                    'rating': get_place_overall_rating(closest_eating_establishments[1].inc_crc)
                 }
             ]
         })
