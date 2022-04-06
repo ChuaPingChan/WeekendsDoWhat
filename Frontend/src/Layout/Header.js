@@ -23,6 +23,11 @@ const LoginLogoutSignup = (props) => {
     return  <nav>
               <ul>
                 <li>
+                  <NavLink activeClassName={classes.active} to="#">
+                    Feedback
+                  </NavLink>
+                </li>
+                <li>
                   <NavLink activeClassName={classes.active} to="/logout">
                     Logout
                   </NavLink>
