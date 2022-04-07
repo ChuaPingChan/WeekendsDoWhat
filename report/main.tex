@@ -201,18 +201,18 @@ The total cost of this server would be 3588.06 dollars, which is 2.48 times the 
 
 \section{SaaS Design, Architecture and Implementation}
     \subsection{Application Design and Implementation}
-        \subsection{User Workflows}
+        \subsubsection{User Workflows}
         
         After signing up for an account with an email address and opting to be a free user or become a premium user, the main workflow for a user is to enter a location and get a list of itinerary recommendations. The user can expand each itinerary to view the details of each place, view pictures, and compare across itineraries.
         
         \begin{figure}[H]
         	\centering
-        	\includegraphics[width=1\textwidth]{figures/place-detail.png}
+        	\includegraphics[width=1\textwidth]{figures/ui-place-details.png}
         	\caption{Viewing the details of a place}
         	\label{view_place_details}
         \end{figure}
         
-        Premium users will be able to read the detailed reviews left by other premium users and can add their own reviews. Users can also use the feedback button to suggest ideas or suggest and edit on inaccurate or outdated information.
+        Premium users will be able to read the detailed reviews left by other premium users and can add their own reviews. Users can also use the feedback button to suggest ideas or suggest and edit on inaccurate or outdated information. More screenshots of user interfaces are given in \autoref{appendix_ui}.
     
         \subsubsection{Data Source and Data Cleaning}
         
@@ -225,7 +225,7 @@ The total cost of this server would be 3588.06 dollars, which is 2.48 times the 
 
         \subsubsection{Frontend, Application and Database}
         
-        Similar to a typical 3-tier application model, we built our frontend using ReactJS to provide a modern and responsive user experience and our backend application using Flask to provide APIs and implement the business logic. As our data naturally fits the relational data model, we used PostgreSQL as our database for data storage. We also carefully designed our SaaS application to be stateless to support multi-tenancy. We will cover the application deployment in detail in the section on AWS services deployed.
+        Similar to a typical 3-tier application model, we built our frontend using ReactJS to provide a modern and responsive user experience and our backend application using Flask to provide APIs and implement the business logic. As our data naturally fits the relational data model, we used PostgreSQL as our database for data storage. We also carefully designed our SaaS application to be stateless to support multi-tenancy. We will cover the application deployment in detail in \autoref{section-aws-services-deployed}.
 
         To provide high quality itinerary recommendations, we rely on a few techniques and heuristics. We select places for users to visit and rank them first based on their distances from the user’s location, and adjust them by accounting for the overall ratings given by past visitors. Also, one common pattern we observe is that people like to have meals between different activities, therefore our recommendations also follow this pattern.
 
@@ -240,8 +240,8 @@ The total cost of this server would be 3588.06 dollars, which is 2.48 times the 
     	\label{deployment_architecture}
     \end{figure}
     
-        \label{section-aws-services-deployed}
         \subsubsection{AWS Services Deployed}
+        \label{section-aws-services-deployed}
         
         For readability, we will bold the font of the AWS services we utilized for our SaaS application.
 
@@ -316,5 +316,40 @@ AWS cloud has been a great enabler in allowing our team to deliver our business 
 We hope that our SaaS will be able to provide more recommendations for locals to explore local parks and eateries and be the most attractive platform used by people as the Covid-19 measures ease in Singapore. 
 
 We also would like to give thanks and appreciation to our professor Teo Yong Meng, Dumitrel Loghin and the entire teaching staff for providing useful feedback during our consultations.
+
+\newpage
+\pagenumbering{gobble}
+\section*{Appendix}
+
+% \appendix
+\begin{appendix}
+
+\section{User Interfaces}
+\label{appendix_ui}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{figures/ui-search.png}
+	\caption{Entering a starting location}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{figures/ui-itineraries-expand.png}
+	\caption{Viewing a recommended itinerary, free users are shown advertisements and all users can use the Feedback button}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{figures/ui-place-details.png}
+	\caption{Viewing the details of a place, premium users can add and read reviews}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{figures/ui-add-review.png}
+	\caption{Adding a user review}
+\end{figure}
+\end{appendix}
 
 \end{document}
