@@ -29,7 +29,7 @@
 % \maketitle
 % \todo{Do up Title page}
 
-%\listoftodos
+\todo{Remove}\listoftodos
 
 % \begin{titlepage}
 % 	\centering
@@ -94,41 +94,43 @@
 
 \section{Executive Summary}
 
-Our SaaS aims to provide local Singaporeans itineraries given a certain location. Unlike other existing services like Google Map and TripAdvisor that only provide information for a single searched location, we provide recommendations of nearby restaurants if users searched for a national park, or vice versa. We require all users to create an account so that we could control spam contents. Moreover, we encourage users to actively leave detailed reviews for our provided itineraries so that we could create authoritative and authentic rankings of parks and restaurants, which makes our database attractive enough to charge premium users monthly fee to access these reviews. Currently, we couldn’t find such online communities or applications providing similar services in Singapore. Thus, we think our SaaS could fill the gap for such needs. 
+Singapore has many great places to visit that not everyone is aware of. An SaaS that is able to recommend places to visit will be of great help to anyone in Singapore who are thinking about how to spend their weekends. Our SaaS aims to provide exactly that.
 
-Our SaaS architecture design is similar to a traditional 3-tier model which uses AWS Elastic Beanstalk PaaS service for the frontend and backend deployment and AWS Aurora PaaS service for the database. Our database deployment spans across 2 availability zones to provide optimal availability and resilience to failures. Since our initial database is less than 50GB, using business grade on-premise databases would be 50 times more expensive and leave a huge amount of storage space unused, as they usually come with 10s of TBs. With the Auto scaling and Cloudwatch monitoring used in our Elastic Beanstalk deployments, we could significantly decrease the cost during off-peak hours as we only keep four EC2 instances active and provide users better service by scaling up our EC2 instances based on demand. With the elasticity provided by Auto scaling groups, we would be able to save \$3400 per month compared with on-premise IT resources.
+Our SaaS aims to provide local Singaporeans itinerary recommendations based on their locations. Unlike other existing services like Google Map and TripAdvisor that only provide information for a single searched location, we provide recommendations of a series of places to visit, which include nearby restaurants and parks. Users will be able to browse and compare the different itineraries recommended, read detailed reviews of suggested places, and decide the best place to visit to spend their weekends. Currently, we couldn’t find such online communities or applications providing similar services in Singapore. Thus, we think our SaaS could fill the gap for such needs.
 
-As there were no competitors in our proposed community and the cost saving measures by utilizing the suitable AWS services for our business model, we estimate our profit per month could reach \$24,034.34. AWS cloud services have provided us a platform to develop and deploy our SaaS without worrying much on the infrastructure implementation and able to focus on delivering our business model. Our team is pleased to learn and utilize cloud services through this module.
+Our SaaS architecture design is similar to a traditional 3-tier model which uses AWS Elastic Beanstalk PaaS service for the frontend and backend deployment and AWS Aurora PaaS service for the database. Our database deployment spans across 2 availability zones to provide optimal availability and resilience to failures. Since our initial database is less than 50GB, using business grade on-premise databases would be 50 times more expensive and leave a huge amount of storage space unused, as they usually come with 10s of TBs. With the Auto scaling and Cloudwatch monitoring used in our Elastic Beanstalk deployments, we could significantly decrease the cost during off-peak hours as we only keep four EC2 instances active and provide users better service by scaling up our EC2 instances based on-demand. With the elasticity provided by Auto scaling groups, we would be able to save \$3400 per month compared with on-premise IT resources.
+
+As we will describe in detail in the Business Model section, our revenue primarily comes from premium tier subscriptions and advertisements. To encourage a rapid growth of user base and reviews, as well as promote higher awareness of our SaaS when it just launches, we would collaborate with owners of restaurants, recreational and entertainment outlets to provide discount coupons to premium users that contribute reviews. We will also collaborate with newly opened restaurants to provide discount privileges to premium users. With a sufficiently large user base and review data, our SaaS will become attractive enough for more users to subscribe for premium tier service and also for business owners to collaborate with us.
+
+As we do not expect much competition for our SaaS over the short term, and with the cost saving measures by utilizing the suitable AWS services for our business model, we estimate that our profit per month could reach SGD 24,223.94. AWS cloud services have provided us a platform to develop and deploy our SaaS without worrying much on the infrastructure implementation and able to focus on delivering our business model. Our team is pleased to learn and utilize cloud services through this module.
+
 
 
 \section{Business Case Identification}
 
-With the COVID-19 situation limiting travels overseas, it is more common for people in Singapore to feel bored during the weekends due to the lack of ideas of leisure activities. Furthermore, food outlets, parks and entertainment outlets may find it difficult to attract visitors due to the COVID-19 safety measures discouraging people to explore Singapore.
+With the COVID-19 situation limiting travels overseas over the past two years, it is common to hear residents of Singapore lament about feeling bored during the weekends. However, we believe Singapore has many hidden gems and interesting places waiting to be discovered, and the solution to this problem is to raise awareness. Furthermore, business owners of food outlets, parks, recreational and entertainment outlets may also find it difficult to attract visitors due to the COVID-19 safety measures discouraging people to explore Singapore. In line with Singapore’s effort to rebuild the economy and gradually opening her borders, we would like to provide a SaaS to increase awareness amongst people in Singapore on the various activities and places they can visit during leisure time.
 
-In line with Singapore’s effort to rebuild the economy and gradually opening her borders, we would like to provide a SaaS to increase awareness amongst people in Singapore on the various activities and places they can visit during leisure time.
+We are developing a SaaS which will recommend leisure itineraries for users to spend their weekends in a meaningful and exploratory way in Singapore. Users can give a preferred location as input to the application and get customized itinerary recommendations based on the input. The service will recommend a few choices of itineraries where each itinerary comprises a series of places to visit for the day. Users can browse and compare the different itineraries recommended, read detailed reviews of suggested places, discuss opinions online, and decide the best places they would like to visit to spend their weekends.
 
-We are developing a SaaS service which will recommend leisure itineraries to users so that they can spend their weekends in a better way in Singapore. The user can give a preferred location as input to the application and get customized itinerary recommendations based on the input.
+Our target users are Singapore residents. We would like all users to create an account and actively provide feedback on the locations in our itinerary. The size of the population in Singapore is still not too large and we could make sure that the feedback of locations are up-to-date and possibly filter some extreme feedback that are caused by personal reasons. A large user base and high number of user reviews will allow us to provide an authentic and authoritative ranking system of all the locations on our website. 
 
-The service will suggest a few choices of itineraries where each itinerary comprises a series of things to do for the day, it includes some details of the place or theme park that the user can visit, nearby restaurants or hawker centers to eat after the activity, etc. It will also include the details of each restaurant suggested like reviews and its ratings.
-
-Our target users would be local Singaporeans. We would like all users to create an account and actively provide feedback on the locations in our itinerary. Within a smaller community, we could make sure that the feedback of locations are up-to-date and possibly filter some extreme feedback that are caused by personal reasons. Our goal would be to provide an authentic and authoritative ranking system of all the locations on our website. 
-
-Just like online shopping, users are more likely to provide feedback if items received don’t meet their expectation and never bother to spend time writing a detailed review on how good the product is unless given some incentives. Thus, we would provide users with free membership if they are willing to provide 10 reviews with photos. We would also allow users to post follow-ups on other people’s reviews as we encourage debates like which place has the best chicken rice. Such debate could help to increase our daily active users as users might visit our website even if they are not asking for itineraries.
+Just like online shopping, users are more likely to provide feedback if items received do not meet their expectation and are less likely to spend time writing a detailed review on how good the product is unless given some incentives. Thus, we would provide users with free membership if they are willing to provide 10 reviews with photos. We would also allow users to post follow-ups on other people’s reviews as we encourage debates like which place has the best chicken rice. Such debate could help to increase our daily active users as users might visit our website even if they are not asking for itineraries.
 
 Currently, Google Map also provides similar review and rating service, but it could not generate itineraries and many reviews are from years ago, which don't represent the current situation. Moreover, some places have very few reviews so few bad/good reviews could greatly impact the overall rating. Tripadvisor is also a website that provides ratings and reviews of parks and restaurants. However, Tripadvisor is tailored towards foreign tourists and few Singaporeans contribute to the reviews. Thus, based on the current market and our target users, we believe that our SaaS is unique enough and would face little competition.
 
 
+
 \section{Business Model}
 
-We separate our users into two groups, namely free tier and premium tier users. Premium tier users will have access and provide user ratings and reviews to all locations that they visit. They will also not be shown any advertisements while using our SaaS. Free tier users will only be able to see the overall ratings of the locations provided in the itinerary. On the right of the itinerary page, free tier users will also be shown advertisements from Google Adsense. Based on \href{https://www.google.com/adsense/start/#calculator}{Google AdSense revenue calculator}, if our website has 50,000 views per month, we would earn approximately \$6,324 per year, which is \$527 per month.
+We separate our users into free tier and premium tier users. Premium tier users will have access to detailed reviews of all places in Singapore and can provide their own review and ratings for the places they visited. They will also not be shown any advertisements while using our SaaS. Free tier users will only be able to see the overall ratings of the locations provided in the itinerary and will not be shown detailed user reviews. On the right of the itinerary page, free tier users will also be shown advertisements from Google Adsense. Based on \href{https://www.google.com/adsense/start/#calculator}{Google AdSense revenue calculator}, if our website has 50,000 views per month, we would earn approximately \$6,324 per year, which is roughly SGD 716.60 per month.
 
-Our early strategy when launching the SaaS is to rapidly gain popularity and grow the size of our user base. With a larger user base, we believe our rating and ranking system will become more reliable for users to make their choices and owners of restaurants would become more interested to work with us to gain more visibility in our service. Thus, we could collaborate with restaurants by requesting them to provide our premium users coupons for each detailed review and in return they will be ranked higher in our recommendation.
+Our early strategy when launching the SaaS is to rapidly gain popularity and grow the size of our user base as well as user review data. With a larger user base and user review data, we believe our rating and ranking system will become more reliable for users to make their choices and business owners would become more interested to work with us for their business to be ranked higher in our recommendation to gain more visibility. Thus, we could collaborate with restaurants by requesting them to provide our premium users coupons for each detailed review and in return they will be ranked higher in our recommendation.
 
 For newly opened/listed restaurants, we could work with the restaurant to provide all our premium tier users with a discount during the first 2 weeks of opening. Hopefully, the restaurants can get enough feedback for improvement. In return, restaurants could also choose not to display their ratings until a certain number of reviews is reached.
 
-Based on the above services, we would charge premium tier users SGD 4.99 per month. Thus, if we have 5,000 premium tier subscriptions, we could earn 24,950 per month without taking corporate tax and GST into account.
+Based on the above services, we would charge premium tier users SGD 4.99 per month. Thus, assuming we have 5,000 premium tier subscriptions on average when the number of active users stabilizes, we could earn SGD 24,950 per month without taking corporate tax and GST into account.
 
-\autoref{table_ondemand_aws_service} shows the cost for on-demand AWS service based on Asia Pacific-Singapore region. Note that all the costs are based on the \href{https://calculator.aws/#}{AWS pricing calculator}. For Elastic Beanstalk, AWS may launch more EC2 instances if needed, so the calculated cost is only an estimate based on the previously mentioned number of monthly active users.
+\autoref{table_ondemand_aws_service} shows the cost for on-demand AWS service based on Asia Pacific-Singapore region. Note that all the costs are based on the \href{https://calculator.aws/#}{AWS pricing calculator}. For Elastic Beanstalk, AWS may launch more EC2 instances if needed, so the calculated cost is only an estimate based on the previously estimated number of monthly active users.
 
 \begin{table}[H]
 	\centering
@@ -142,21 +144,20 @@ Based on the above services, we would charge premium tier users SGD 4.99 per mon
 		& Amazon Aurora PostgreSQL-Compatible DB with 20 GB storage
 		& 231.27 \\
 	Elastic Beanstalk for frontend in nodejs
-		& EC2: t4g.large (minimum of 1 and maximum of 4); Application Load Balancer: 5GB data processed per hour
+		& EC2: t4g.large (minimum of 2 and maximum of 4); Application Load Balancer: 5GB data processed per hour
 		& 147.36 \\
 	Elastic Beanstalk for backend in Python
-	    & EC2: t3.2xlarge (minimum of 1 and maximum of 4); Application Load Balancer: 10GB data processed per hour
+	    & EC2: t3.2xlarge (minimum of 2 and maximum of 4); Application Load Balancer: 10GB data processed per hour
     	& 683.86 \\
 	\hline \hline
 	\end{tabular}
 	\caption{Cost for on-demand AWS service (price based on Asia Pacific-Singapore region)}
 	\label{table_ondemand_aws_service}
 \end{table}
-\todo{To be formatted better}
 
 Total = 1033.29 USD = 1442.66 SGD
 
-Profit per month = 24950 + 527 - 1442.66 = 24034.34
+Profit per month = 24950 + 716.60 - 1442.66 = 24223.94 SGD
 
 In comparison, for on-premise IT resources, the cost of a server that matches the maximum computing power set in the elastic load balancer is as shown in \autoref{table_onpremise_it_resources}.
 
@@ -196,29 +197,50 @@ In comparison, for on-premise IT resources, the cost of a server that matches th
 	\label{table_onpremise_it_resources}
 \end{table}
 
-The total cost of this server would be 3588.06 dollars, which is 2.48 times the monthly cost of our AWS cost. However, since our itinerary computation task is not memory intensive, we would need to spend another 3588.06 dollars if we need more computing resources. However, with the deployment of Elastic Beanstalk, adding t4g.large and t3.2xlarge instances would cost less than 100 dollars per month. Instead of utilizing very little of the computer power of the additional \todo{To check}Threadripper CPU and paying a huge upfront cost, using AWS Elastic Beanstalk would be much more economical. Moreover, we didn’t include the electricity cost, network cost, software license cost, labor cost for maintaining the server and the office cost for placing the server. The monthly wage to hire a competent IT staff in Singapore to maintain the server would be more than \$5000, which exceeds the cost of our single server. In comparison, the estimated setup cost for AWS would be only \$1200 per month as we could hire a part-time IT staff or do it ourselves, since most of the maintenance job would be handled by AWS.
+The total cost of this server would be 3588.06 dollars, which is 2.48 times the monthly cost of our AWS cost. However, since our itinerary computation task is not memory intensive, we would need to spend another 3588.06 dollars if we need more computing resources. However, with the deployment of Elastic Beanstalk, adding t4g.large and t3.2xlarge instances would cost less than 100 dollars per month. Instead of utilizing very little of the computer power of the additional CPU and paying a huge upfront cost, using AWS Elastic Beanstalk would be much more economical. Moreover, we didn’t include the electricity cost, network cost, software license cost, labor cost for maintaining the server and the office cost for placing the server. The monthly wage to hire a competent IT staff in Singapore to maintain the server would be more than \$5000, which exceeds the cost of our single server. In comparison, the estimated setup cost for AWS would be only \$1200 per month as we could hire a part-time IT staff or do it ourselves, since most of the maintenance job would be handled by AWS.
 
-\section{SaaS Architecture and Implementation}
-    \subsection{Application Implementation}
-        \subsubsection{Data Source}
+\section{SaaS Design, Architecture and Implementation}
+    \subsection{Application Design and Implementation}
+        \subsection{User Workflows}
         
-        For data integrity, consistency and reliability, we obtained our datasets from the trusted \url{data.gov.sg} and primarily selected two datasets on \href{https://data.gov.sg/dataset/eating-establishments}{eating establishments} and \href{https://data.gov.sg/dataset/parks}{parks} in Singapore for our application. We didn’t consider alternative data sources as we want to have reliable data and don’t prefer to have a ‘garbage-in-garbage-out’ situation when we provide our solutions to our users.
+        After signing up for an account with an email address and opting to be a free user or become a premium user, the main workflow for a user is to enter a location and get a list of itinerary recommendations. The user can expand each itinerary to view the details of each place, view pictures, and compare across itineraries.
+        
+        \begin{figure}[H]
+        	\centering
+        	\includegraphics[width=1\textwidth]{figures/place-detail.png}
+        	\caption{Viewing the details of a place}
+        	\label{view_place_details}
+        \end{figure}
+        
+        Premium users will be able to read the detailed reviews left by other premium users and can add their own reviews. Users can also use the feedback button to suggest ideas or suggest and edit on inaccurate or outdated information.
+        
+        \redfont{[User workflow diagram]}\todo{To be given by Pranav}
+    
+        \subsubsection{Data Source and Data Cleaning}
+        
+        For data integrity, consistency and reliability, we obtained our datasets from the trusted \url{data.gov.sg} and primarily selected two datasets on \href{https://data.gov.sg/dataset/eating-establishments}{eating establishments} and \href{https://data.gov.sg/dataset/parks}{parks} in Singapore for our application. Rather than having many datasets, we decided to start with these two and clean them well as we want to have reliable data and avoid a ‘garbage-in-garbage-out’ situation when we provide our solutions to our users.
 
-        Providing high quality itinerary recommendations requires clean and high quality datasets. We carefully vetted the datasets chosen and cleaned the data in various ways, for example, removing data with missing values, selecting only the critical fields/columns and rename of similar words for consistency.
+        Providing high quality itinerary recommendations requires clean and high quality datasets. We carefully vetted the datasets chosen and cleaned the data in various ways, for example, removing data with missing values, selecting only the critical fields/columns and renaming of similar words for consistency.
         
         We also noticed that datasets from the government weren’t updated periodically and some of the latest versions were from two years ago. Consequently, we provide a feedback button for users to provide new information and report any out-of-date or inaccurate information in the data. We further enhanced the data points by integrating with additional Python libraries to provide an image to each location of our suggestion.
 
-        
+
         \subsubsection{Frontend, Application and Database}
         
-        Similar to a typical 3-tier application model, we built our frontend using ReactJS to provide a modern and responsive user experience and our backend application using Flask to provide APIs and implement the business logic. As our data naturally fits the relational data model, we used PostgreSQL as our database for data storage. We also carefully designed our SaaS application to be stateless to support multi-tenancy. We will cover the application deployment in detail in \autoref{section-aws-services-deployed}.
+        Similar to a typical 3-tier application model, we built our frontend using ReactJS to provide a modern and responsive user experience and our backend application using Flask to provide APIs and implement the business logic. As our data naturally fits the relational data model, we used PostgreSQL as our database for data storage. We also carefully designed our SaaS application to be stateless to support multi-tenancy. We will cover the application deployment in detail in the section on AWS services deployed.
 
-        To provide high quality itinerary recommendations, we rely on a few techniques and heuristics. We select places for users to visit and rank them based on their distances from the user’s location as well as the overall ratings given by past visitors. Many users also visit places recommended by our applications without leaving a rating, so we also adjust the rank based on how many views (clicks) a particular place got. Also, one common pattern we observe is that people like to have meals between different activities, therefore our recommendations also follow this pattern.
+        To provide high quality itinerary recommendations, we rely on a few techniques and heuristics. We select places for users to visit and rank them first based on their distances from the user’s location, and adjust them by accounting for the overall ratings given by past visitors. Also, one common pattern we observe is that people like to have meals between different activities, therefore our recommendations also follow this pattern.
 
-    \subsection{SaaS Architecture}
-    \redfont{The diagram} below illustrates our SaaS architecture design and we will describe how our application is designed and what AWS services are deployed in the sub-sections.
+
+    \subsection{SaaS Design and Architecture}
+    \autoref{deployment_architecture} illustrates our SaaS architecture design and we will describe how our application is designed and what AWS services are deployed in the sub-sections.
     
-    \todo{Insert SaaS architecture diagram}
+    \begin{figure}[H]
+    	\centering
+    	\includegraphics[width=1\textwidth]{figures/final.drawio.png}
+    	\caption{SaaS Deployment Architecture}
+    	\label{deployment_architecture}
+    \end{figure}
     
         \label{section-aws-services-deployed}
         \subsubsection{AWS Services Deployed}
@@ -235,7 +257,7 @@ The total cost of this server would be 3588.06 dollars, which is 2.48 times the 
         
         \subsubsection{System Considerations}
         
-        While there are advantages and disadvantages of using cloud over on-premise for our SaaS application, the advantages outweigh the disadvantages for our business case. We were able to save cost on on-premise equipment and additional employment of engineers to maintain the infrastructure. We can focus on the development and deliveries of our SaaS application, rather than spending time to set up and manage the infrastructure. Using cloud services also allows us to pay on demand. We also do not have to worry and can rely on the cloud platform for our business continuity and disaster recovery strategy. We will dive into details for each system component and provide our design considerations for our SaaS application.
+        While there are advantages and disadvantages of using cloud over on-premise for our SaaS application, the advantages outweigh the disadvantages for our business case. We were able to save cost on on-premise equipment and additional employment of engineers to maintain the infrastructure. We can focus on the development and deliveries of our SaaS application, rather than spending time to set up and manage the infrastructure. Using cloud services also allows us to pay on-demand. We also do not have to worry and can rely on the cloud platform for our business continuity and disaster recovery strategy. We will dive into details for each system component and provide our design considerations for our SaaS application.
         
             \textbf{Systems}
             
@@ -285,17 +307,16 @@ The total cost of this server would be 3588.06 dollars, which is 2.48 times the 
 
 Since AWS has its own servers and database in Singapore, so even if users ask to have their data stored locally, we could still utilize the AWS RDS service. The only advantage for on-premise IT resources is that we have full control of the hardware and could perform security updates as soon as possible. We have noticed that AWS elastic beanstalk doesn’t support many of the latest packages and language updates, which could cause security vulnerabilities like the recent Log4j. However, as illustrated in the Business Model section, the cost of hiring IT staff in Singapore would exceed the cost of AWS. Moreover, we expect to have rapid user growth in the first few months, so using cloud service could provide the elasticity to expand our business. With current global chip shortages and delay in logistics, newly purchased on-premise servers might not arrive in time. Thus, despite the few disadvantages of AWS, deploying our SaaS on cloud service is the more feasible way.
 
-Since we don’t think there would be a fixed minimum number of user accesses throughout the day, we would not opt for reserved instances on AWS. With our configuration on elastic beanstalk, we will only have 2 instances for frontend and backend respectively during off-peak hours, which will cost us a total of \$1.0144 per hour. Compared with on demand pricing, cost reduction of 1-year reserved small instances is negligible. For ease of development and higher reliability, all of our instances are based on x86 processors currently. As more software improves their performance and compatibility on ARM based processors, we could immediately switch to cheaper and higher performance ARM instances on AWS if we opt for on demand pricing for all of our instances.
+Since we don’t think there would be a fixed minimum number of user accesses throughout the day, we would not opt for reserved instances on AWS. With our configuration on elastic beanstalk, we will only have 2 instances for frontend and backend respectively during off-peak hours, which will cost us a total of \$1.0144 per hour. Compared with on-demand pricing, cost reduction of 1-year reserved small instances is negligible. For ease of development and higher reliability, all of our instances are based on x86 processors currently. As more software improves their performance and compatibility on ARM based processors, we could immediately switch to cheaper and higher performance ARM instances on AWS if we opt for on-demand pricing for all of our instances.
 
 We also considered using AWS Lambda for our backend, because it is serverless and more agile than Elastic Beanstalk. However, we discovered that AWS Lambda would take more than 2 seconds to respond if the trigger function has been inactive for a long time.In order to reduce the latency of AWS Lambda to less than 100 ms, we have to constantly ping the functions even if no users are using the service. This significantly increased our cost for using AWS Lambda to \$850 per month, which is \$166.14 more than using Elastic Beanstalk for backend. 
 
 \section{Conclusion}
 
-WS cloud has been a great enabler in allowing our team to deliver our business model in a relatively short amount of time by focusing on the features, rather than managing the infrastructure or platforms. AWS services come with a variety of AI/ML and security tools which we have benefited from such as the AWS CloudTrail, AWS Cloudwatch and AWS shield to secure our application from malicious actors. AWS cloud also helps us to reduce cost effectively as we are required to pay as per demand and we can choose which AWS services appropriately for our SaaS after a thorough cost analysis with their AWS cost estimation. 
+AWS cloud has been a great enabler in allowing our team to deliver our business model in a relatively short amount of time by focusing on the features, rather than managing the infrastructure or platforms. AWS services come with a variety of AI/ML and security tools which we have benefited from such as the AWS CloudTrail, AWS Cloudwatch and AWS shield to secure our application from malicious actors. AWS cloud also helped us to reduce cost effectively as we are required to pay as per demand and we can choose which AWS services appropriately for our SaaS after a thorough cost analysis with their AWS cost estimation. 
 
 We hope that our SaaS will be able to provide more recommendations for locals to explore local parks and eateries and be the most attractive platform used by people as the Covid-19 measures ease in Singapore. 
 
-We also would like to give thanks and appreciation to our professor Teo and his teaching staff for providing useful feedback during our consultations.
-
+We also would like to give thanks and appreciation to our professor Teo Yong Meng, Dumitrel Loghin and the entire teaching staff for providing useful feedback during our consultations.
 
 \end{document}
