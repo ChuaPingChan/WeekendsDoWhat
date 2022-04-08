@@ -1,0 +1,40 @@
+.actions {
+  display: flex;
+  margin-top: 32px;
+  justify-content: center;
+}
+.text {
+  display: flex;
+  justify-content: center;
+}
+.actions button {
+  font: inherit;
+  cursor: pointer;
+  background-color: transparent;
+  border: 1px solid #8a2b06;
+  padding: 0.5rem 2rem;
+  border-radius: 25px;
+  margin-left: 1rem;
+}
+.actions .button--alt {
+  color: #8a2b06;
+}
+.actions button:hover,
+.actions button:active {
+  background-color: #5a1a01;
+  border-color: #5a1a01;
+  color: white;
+}
+.searchButton {
+  width: 50%;
+  background: dodgerblue;
+  color: #fff;
+  border: #fff;
+  width: 130px;
+  height: 35px;
+  border-radius: 6px;
+  margin-top: 20px;
+}
+.searchButton:hover {
+  background: linear-gradient(45deg, greenyellow, dodgerblue);
+}
