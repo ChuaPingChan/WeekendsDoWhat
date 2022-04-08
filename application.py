@@ -25,19 +25,19 @@ import random
 import names
 
 # Init app
-app = Flask(__name__)
-CORS(app)
+application = Flask(__name__)
+CORS(application)
 
 # Connect to database, check out https://www.youtube.com/watch?v=w25ea_I89iM for details
 if 'ENV' in os.environ and os.environ['ENV'] == 'heroku':
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://aoganqgblrifsa:9a12fa516c3d4002d773d7644617d4b6f92b7f4158c687ce3fe9778feffef5a7@ec2-52-207-74-100.compute-1.amazonaws.com:5432/d49oheo6egq1a2'
+    application.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://aoganqgblrifsa:9a12fa516c3d4002d773d7644617d4b6f92b7f4158c687ce3fe9778feffef5a7@ec2-52-207-74-100.compute-1.amazonaws.com:5432/d49oheo6egq1a2'
 elif 'ENV' in os.environ and os.environ['ENV'] == 'aws':
-    app.config['SQLALCHEMY_DATABASE_URI'] = ''
+    application.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@mydbcluster.cluster-crixlxpvi0ep.ap-southeast-1.rds.amazonaws.com:5432/WeekendsDoWhat'
 else:
-    app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://postgres:{os.environ['postgres_pwd']}@localhost/WeekendsDoWhat"
+    application.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://postgres:{os.environ['postgres_pwd']}@localhost/WeekendsDoWhat"
 
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Just to avoid warnings
-db = SQLAlchemy(app)
+application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Just to avoid warnings
+db = SQLAlchemy(application)
 
 # For getting location information from user's input
 import geopy
@@ -45,11 +45,11 @@ geopy.geocoders.options.default_timeout = 30
 geolocator = geopy.geocoders.Nominatim(user_agent="my_request")
 
 # For user handling and authentication
-app.config["JWT_SECRET_KEY"] = "super-secret"  # TODO: Change this later
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(seconds=3600)
-app.config['JWT_REFRESH_TOKEN_EXPIRES'] = datetime.timedelta(seconds=3600)
-jwt = JWTManager(app)
-bcrypt = Bcrypt(app)
+application.config["JWT_SECRET_KEY"] = "super-secret"  # TODO: Change this later
+application.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(seconds=3600)
+application.config['JWT_REFRESH_TOKEN_EXPIRES'] = datetime.timedelta(seconds=3600)
+jwt = JWTManager(application)
+bcrypt = Bcrypt(application)
 
 # Other global variables
 DIR_IMAGE_DATA = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data', 'images')
@@ -237,11 +237,11 @@ def user_is_premium(user_email):
 # REST APIs #
 #############
 
-@app.route('/')
+@application.route('/')
 def index():
     return jsonify({ 'msg': 'This is the server of WeekendsDoWhat' })
 
-@app.route("/get_user_info", methods=["GET"])
+@application.route("/get_user_info", methods=["GET"])
 @jwt_required()
 def get_user_info():
     user_email = get_jwt_identity()
@@ -259,7 +259,7 @@ def get_user_info():
 # TODO: Use SSL to secure data in POST request
 # Create a route to authenticate your users and return JWTs. The
 # create_access_token() function is used to actually generate the JWT.
-@app.route("/login", methods=["POST"])
+@application.route("/login", methods=["POST"])
 def create_token():
     if 'email' not in request.json or 'password' not in request.json:
         return ('Invalid request', 400)
@@ -279,7 +279,7 @@ def create_token():
     }
 
 # TODO: Use SSL to secure data in POST request
-@app.route('/signup', methods=['POST'])
+@application.route('/signup', methods=['POST'])
 def signup():
     if set(['email', 'username', 'password']) - set(request.json):
         return ('Invalid request', 400)
@@ -304,7 +304,7 @@ def signup():
         'is_premium': False
     }, 200)
 
-@app.route('/set_premium_user', methods=["GET"])
+@application.route('/set_premium_user', methods=["GET"])
 @jwt_required()
 def set_premium_user():
     user_email = get_jwt_identity()
@@ -316,14 +316,14 @@ def set_premium_user():
     db.session.commit()
     return ('', 200)
 
-@app.route('/all_districts')
+@application.route('/all_districts')
 def get_all_districts():
     # TODO: Consider returning the list in decreasing population density
     return jsonify({
         "districts": ['Amber Road', 'Ang Mo Kio', 'Anson', 'Balestier', 'Beach Road', 'Bedok', 'Bishan', 'Braddell', 'Bukit Panjang', 'Bukit Timah', 'Cairnhill', 'Cecil', 'Changi', 'Choa Chu Kang', 'Clementi New Town', 'Clementi Park', 'Dairy Farm', 'Eunos', 'Geylang', 'Golden Mile', 'Harbourfront', 'High Street', 'Hillview', 'Holland Road', 'Hong Leong Garden', 'Hougang', 'Joo Chiat', 'Jurong East', 'Jurong West', 'Katong', 'Kew Drive', 'Kranji', 'Lim Chu Kang', 'Little India', 'Loyang', 'Macpherson', 'Marina East', 'Marina South', 'Middle Road', 'Novena', 'Orchard', 'Pasir Panjang', 'Pasir Ris', "People's Park", 'Punggol', 'Queenstown', 'Raffles Place', 'River Valley', 'Seletar', 'Sembawang', 'Serangoon', 'Serangoon Garden', 'Springleaf', 'Tampines', 'Tanglin', 'Tanjong Pagar', 'Telok Blangah', 'Tengah', 'Thomson', 'Tiong Bahru', 'Toa Payoh', 'Ulu Pandan', 'Upper Bukit Timah', 'Upper East Coast', 'Upper Thomson', 'Watten Estate', 'Woodgrove', 'Yishun']
     })
 
-@app.route('/place_image', methods=['GET'])
+@application.route('/place_image', methods=['GET'])
 def place_image():
     if 'place_id' not in request.args:
         return ('Invalid request format', 400)
@@ -346,7 +346,7 @@ def place_image():
 
     return send_file(place_image_path)
 
-@app.route('/place_info', methods=['GET'])
+@application.route('/place_info', methods=['GET'])
 @jwt_required(optional=True)
 def place_info():
     if 'place_id' not in request.args or 'place_type' not in request.args or not place_type_valid(request.args['place_type']):
@@ -420,7 +420,7 @@ def place_info():
         'reviews': reviews
     }
 
-@app.route('/get_itineraries', methods=['GET'])
+@application.route('/get_itineraries', methods=['GET'])
 @jwt_required(optional=True)
 def get_itineraries():
     if 'location' not in request.args or 'num_itineraries' not in request.args:
@@ -446,7 +446,7 @@ def get_itineraries():
     return response
 
 # TODO: Use SSL to secure data in POST request
-@app.route('/add_review', methods=["POST"])
+@application.route('/add_review', methods=["POST"])
 @jwt_required()
 def add_review():
     review_length_limit = 1000
@@ -497,4 +497,4 @@ def add_review():
 
 # Run server
 if __name__ == '__main__':
-    app.run()
+    application.run()

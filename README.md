@@ -1,6 +1,6 @@
 ### For Ubuntu server setup
 
-1. (First time only) Setup of the frontend, app and postgres
+1. (First time only) Setup of the frontend, backend server and postgres
     ```
     bash utility/ubuntu_install.sh
     ```
@@ -24,9 +24,10 @@
 1. In subsequent sessions, just set the environment variables
     | Environment Variable Name | Value                 | Remarks |
     | ------------------------- | --------------------- | -------- |
+    | FLASK_APP                 | "application"         ||
     | FLASK_ENV                 | "development"           | Set this only if you are running the server locally |
-    | postgres_pwd              | PostgreSQL database password  ||
-    | ENV                       | "heroku" or "aws"     | Set this only on heroku or AWS |
+    | postgres_pwd              | PostgreSQL database password  | PostgreSQL password on our Ubuntu VM is "password" |
+    | ENV                       | "aws"     | Set this only on AWS (e.g., EC2, Elastic Beanstalk) |
 1. To run the server
     ```
     flask run --host=0.0.0.0 --port=5050
@@ -71,9 +72,10 @@
 1. Set the following environment variables in your shell:
     | Environment Variable Name | Value                 | Remarks |
     | ------------------------- | --------------------- | -------- |
+    | FLASK_APP                 | "application"         ||
     | FLASK_ENV                 | "development"           | Set this only if you are running the server locally |
     | postgres_pwd              | PostgreSQL database password  | PostgreSQL password on our Ubuntu VM is "password" |
-    | ENV                       | "heroku" or "aws"     | Set this only on heroku or AWS |
+    | ENV                       | "aws"     | Set this only on AWS (e.g., EC2, Elastic Beanstalk) |
 1. If this is the first time you are setting up the database, populate the newly create database following the steps in [docs/db-setup.md](docs/db-setup.md).
 1. Run the Flask backend
     ```
