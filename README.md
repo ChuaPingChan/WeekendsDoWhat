@@ -56,7 +56,7 @@ psql WeekendsDoWhat -U postgres
 
 
 ### Create table and push database to RDS
-1. Change the **final** psycopg2.connect in postgresql_setup.py with the endpoint of the previously created AWS RRS: 
+1. In utility/psotgresql_setup.py, change the **final** psycopg2.connect line by providing the endpoint of the previously created AWS RDS:
 ```
 conn = psycopg2.connect(r"host=weekendsdowhat-instance-1.crixlxpvi0ep.ap-southeast-1.rds.amazonaws.com port=5432 dbname=postgres user=postgres password=postgres")
 conn = psycopg2.connect(r"host=[RDS_endpoint] port=5432 dbname=postgres user=postgres password=postgres")
@@ -74,7 +74,7 @@ python postgresql_setup.py
 Follow this [link](https://github.com/aws/aws-elastic-beanstalk-cli-setup) for installation.
 
 ### Edit app.py
-Inside ./Backend folder, change the **final** application.config line, eg:
+In application.py, change the **final** application.config line by providing the endpoint of the previously created AWS RDS:
 ```
 application.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@mydbcluster.cluster-crixlxpvi0ep.ap-southeast-1.rds.amazonaws.com:5432/WeekendsDoWhat'
 application.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://[rds_username]:[rds_password]@[rds_endpoint]:5432/[rds_db_name]'
@@ -104,7 +104,7 @@ Add rule -> Type: PostgreSQL; Source: [security group of created EBS backend]
 ## AWS Elastic Beanstalk (EBS) for Frontend
 
 ### Update the URL
-In [Constants.js](../Frontend/src/Utils/Constants.js), update the URL (need to include http://)
+In [Constants.js](../Frontend/src/Utils/Constants.js), update the URL of Flask's EBS (need to include http://)
 ```
 api_endpoint: "http://flask-env3.eba-shnxm3uf.ap-southeast-1.elasticbeanstalk.com"
 api_endpoint: "[URL of Flask's EBS]"
