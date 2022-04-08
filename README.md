@@ -1,87 +1,130 @@
-### For Ubuntu server setup
+# Steps for Deployment on AWS
+Our SaaS service, WeekendsDoWhat, mainly consists of AWS RDS Aurora PostgreSQL-Compatible Edition database, AWS Elastic  
+Beanstalk using Flask for backend and Elastic Beanstalk using React for frontend. The setup order would be database,  
+backend and frontend.
 
-1. (First time only) Setup of the frontend, backend server and postgres
-    ```
-    bash utility/ubuntu_install.sh
-    ```
-    If you see this error below
-    ```
-    Traceback (most recent call last):
-    File "./utility/postgresql_setup.py", line 12, in <module>
-        conn = psycopg2.connect(f"host=localhost port=5432 dbname=WeekendsDoWhat user=postgres password={os.environ['postgres_pwd']}")
-    File "/home/weekends/.local/lib/python3.8/site-packages/psycopg2/__init__.py", line 122, in connect
-        conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
-    psycopg2.OperationalError: connection to server at "localhost" (127.0.0.1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
-    connection to server at "localhost" (127.0.0.1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
-    ```
-    you need to update the `postgres` user password by running
-    ```
-    sudo su - postgres -c "psql WeekendsDoWhat"
-    ALTER ROLE postgres WITH PASSWORD 'password';
-    \q
-    ```
-    and retry the command `bash utility/ubuntu_install.sh`
-1. In subsequent sessions, just set the environment variables
-    | Environment Variable Name | Value                 | Remarks |
-    | ------------------------- | --------------------- | -------- |
-    | FLASK_APP                 | "application"         ||
-    | FLASK_ENV                 | "development"           | Set this only if you are running the server locally |
-    | postgres_pwd              | PostgreSQL database password  | PostgreSQL password on our Ubuntu VM is "password" |
-    | ENV                       | "aws"     | Set this only on AWS (e.g., EC2, Elastic Beanstalk) |
-1. To run the server
-    ```
-    flask run --host=0.0.0.0 --port=5050
-    ```
-    To run the frontend
-    ```
-    cd Frontend && npm start
-    ```
+## AWS RDS
 
-### Setup and Run the Server
-1. Install Python 3.9.7
-    - On Windows, check the option to enable Python to be added to the PATH environment variable during installation. Otherwise, [add the path of Python to the PATH environment variable manually](https://www.architectryan.com/2018/08/31/how-to-change-environment-variables-on-windows-10/).
-1. Start a shell and change the working directory to this project's root directory
-1. Create and activate a python environment (Optional)
-    1. Using Conda
-        ```
-        conda create --name cloud python=3.9.7
-        conda activate cloud
-        ```
-    1. Using venv
+### Create database on AWS
 
-        (First time only) If on Ubuntu, install python3-venv
-        ```
-        sudo apt update && sudo apt -y install python3-venv
-        ```
-        (First time only) Create the venv folder
-        ```
-        python -m venv venv
-        ```
-        Activate the virtual environment
-        ```
-        # Mac/Ubuntu
-        source venv/bin/activate
+Standard create -> Amazon Aurora PostgreSQL-Compatible Edition -> PostgreSQL 13.5  
+Templates: Dev/Test  
+Settings: set username and password to postgres  
+DB instance class: Memory optimized -> db.r6g.large (can change but this one cheapest)  
+Availability & durability: Don't create an Aurora Replica (save cost)  
+Connectivity: Public access -> Yes  
+Additional configuration: initial database name -> WeekendsDoWhat (it seems that this cannot be renamed after db creation)  
+                          Deletion protection -> enable
 
-        # Windows CMD
-        venv\Scripts\activate
-        ```
-1. Install packages
-    ```
-    pip install -r requirements.txt
-    ```
-1. Set the following environment variables in your shell:
-    | Environment Variable Name | Value                 | Remarks |
-    | ------------------------- | --------------------- | -------- |
-    | FLASK_APP                 | "application"         ||
-    | FLASK_ENV                 | "development"           | Set this only if you are running the server locally |
-    | postgres_pwd              | PostgreSQL database password  | PostgreSQL password on our Ubuntu VM is "password" |
-    | ENV                       | "aws"     | Set this only on AWS (e.g., EC2, Elastic Beanstalk) |
-1. If this is the first time you are setting up the database, populate the newly create database following the steps in [docs/db-setup.md](docs/db-setup.md).
-1. Run the Flask backend
-    ```
-    flask run --host=0.0.0.0 --port=<port_num>
-    ```
+### Edit security group of database
+Edit inbound rules:   
+Add rule -> Type: PostgreSQL; Source: 0.0.0.0/0  
+Add rule -> Type: PostgreSQL; Source: ::/0 (Just in case someone use IPv6)
 
-### Setup and Run the Frontend server
-1. Start a shell and change the working directory to "./Frontend"
-1. Follow the steps in [docs/frontend.md](docs/frontend.md)
+### Create PostgreSQL database on local machine
+#### Installation
+
+For Mac:
+```
+brew install postgresql
+brew services start postgresql
+```
+
+For Windows:
+Download PostgreSQL. Link for reference: https://phoenixnap.com/kb/install-postgresql-windows  
+For psql command to work, need to add PATH of PostgreSQL to system settings.
+
+#### Create database and user
+```
+# Start service
+brew services start postgresql
+
+# Create database with the name "WeekendsDoWhat"
+$ createdb WeekendsDoWhat
+
+# Login to database
+$ psql WeekendsDoWhat
+
+[Optional]
+# Create user `postgres`
+CREATE ROLE postgres WITH LOGIN PASSWORD 'password';
+
+# Login using new user's credentials
+/q
+psql WeekendsDoWhat -U postgres
+```
+
+
+### Create table and push database to RDS
+1. Change the psycopg2.connect in postgresql_setup.py with the endpoint of the previously created AWS RRS: 
+```
+conn = psycopg2.connect(r"host=weekendsdowhat-instance-1.crixlxpvi0ep.ap-southeast-1.rds.amazonaws.com port=5432 dbname=postgres user=postgres password=postgres")
+conn = psycopg2.connect(r"host=[RDS_endpoint] port=5432 dbname=postgres user=postgres password=postgres")
+```
+2. Run
+```
+python postgresql_setup.py
+```
+
+## AWS Elastic Beanstalk (EBS) for Backend
+
+### Install EBS CLI
+(Only if you haven't installed EBS CLI on your local machine)
+
+Follow this [link](https://github.com/aws/aws-elastic-beanstalk-cli-setup) for installation.
+
+### Edit app.py
+Inside ./Backend folder, change the application.config line, eg:
+```
+application.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@mydbcluster.cluster-crixlxpvi0ep.ap-southeast-1.rds.amazonaws.com:5432/WeekendsDoWhat'
+application.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://[rds_username]:[rds_password]@[rds_endpoint]:5432/[rds_db_name]'
+```
+
+### Create and launch EBS using command line 
+Create environment
+```
+eb init -p python-3.7 flask-deploy --region ap-southeast-1
+eb init -p python-3.7 [env_name] --region ap-southeast-1
+```
+Create application
+```
+eb create flask-env
+eb create [application_name]
+```
+If there are any changes, update RDS
+```
+eb deploy flask-env
+eb deploy [application_name]
+```
+
+### Edit security group of database
+Add one more inbound rule to the created AWS RDS database:  
+Add rule -> Type: PostgreSQL; Source: [security group of created EBS backend]
+
+## AWS Elastic Beanstalk (EBS) for Frontend
+
+### Update the URL
+In [Constants.js](../Frontend/src/Utils/Constants.js), update the URL (need to include http://)
+```
+api_endpoint: "http://flask-env3.eba-shnxm3uf.ap-southeast-1.elasticbeanstalk.com"
+api_endpoint: "[URL of Flask's EBS]"
+```
+
+### Create and launch EBS using command line
+Inside the ./Frontend folder, create a sample application first.
+```
+eb init --platform node.js --region ap-southeast-1
+```
+Create sample application
+```
+eb create --sample react
+eb create --sample [application_name]
+```
+Deploy the actual code
+```
+eb deploy
+```
+
+### Edit security group of Backend/Flask's Elastic Beanstalk
+Add one more inbound rule to the created Backend/Flask's Elastic Beanstalk:  
+Add rule -> Type: HTTP; Source: [security group of created Frontend/React's EBS]
