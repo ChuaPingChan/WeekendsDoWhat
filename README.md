@@ -1,7 +1,5 @@
 # Steps for Deployment on AWS
-Our SaaS service, WeekendsDoWhat, mainly consists of AWS RDS Aurora PostgreSQL-Compatible Edition database, AWS Elastic  
-Beanstalk using Flask for backend and Elastic Beanstalk using React for frontend. The setup order would be database,  
-backend and frontend.
+Our SaaS service, WeekendsDoWhat, mainly consists of AWS RDS Aurora PostgreSQL-Compatible Edition database, AWS Elastic Beanstalk using Flask for backend and Elastic Beanstalk using React for frontend. The setup order would be database, backend and frontend.
 
 ## AWS RDS
 
