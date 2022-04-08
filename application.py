@@ -31,10 +31,10 @@ CORS(application)
 # Connect to database, check out https://www.youtube.com/watch?v=w25ea_I89iM for details
 if 'ENV' in os.environ and os.environ['ENV'] == 'heroku':
     application.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://aoganqgblrifsa:9a12fa516c3d4002d773d7644617d4b6f92b7f4158c687ce3fe9778feffef5a7@ec2-52-207-74-100.compute-1.amazonaws.com:5432/d49oheo6egq1a2'
-elif 'ENV' in os.environ and os.environ['ENV'] == 'aws':
-    application.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@mydbcluster.cluster-crixlxpvi0ep.ap-southeast-1.rds.amazonaws.com:5432/WeekendsDoWhat'
-else:
+elif 'ENV' in application.config and application.config['ENV'] == 'development':
     application.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://postgres:{os.environ['postgres_pwd']}@localhost/WeekendsDoWhat"
+else:
+    application.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@mydbcluster.cluster-crixlxpvi0ep.ap-southeast-1.rds.amazonaws.com:5432/WeekendsDoWhat'
 
 application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Just to avoid warnings
 db = SQLAlchemy(application)

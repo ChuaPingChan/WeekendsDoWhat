@@ -27,7 +27,6 @@
     | FLASK_APP                 | "application"         ||
     | FLASK_ENV                 | "development"           | Set this only if you are running the server locally |
     | postgres_pwd              | PostgreSQL database password  | PostgreSQL password on our Ubuntu VM is "password" |
-    | ENV                       | "aws"     | Set this only on AWS (e.g., EC2, Elastic Beanstalk) |
 1. To run the server
     ```
     flask run --host=0.0.0.0 --port=5050
@@ -75,7 +74,6 @@
     | FLASK_APP                 | "application"         ||
     | FLASK_ENV                 | "development"           | Set this only if you are running the server locally |
     | postgres_pwd              | PostgreSQL database password  | PostgreSQL password on our Ubuntu VM is "password" |
-    | ENV                       | "aws"     | Set this only on AWS (e.g., EC2, Elastic Beanstalk) |
 1. If this is the first time you are setting up the database, populate the newly create database following the steps in [docs/db-setup.md](docs/db-setup.md).
 1. Run the Flask backend
     ```

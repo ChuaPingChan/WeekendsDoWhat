@@ -4,12 +4,10 @@ import os
 
 # Connect to database
 conn = None
-if 'ENV' in os.environ and os.environ['ENV'] == 'heroku':
-    conn = psycopg2.connect(r"host=ec2-52-207-74-100.compute-1.amazonaws.com port=5432 dbname=d49oheo6egq1a2 user=aoganqgblrifsa password=9a12fa516c3d4002d773d7644617d4b6f92b7f4158c687ce3fe9778feffef5a7")
-elif 'ENV' in os.environ and os.environ['ENV'] == 'aws':
-    conn = psycopg2.connect(r"host=weekendsdowhat-instance-1.crixlxpvi0ep.ap-southeast-1.rds.amazonaws.com port=5432 dbname=postgres user=postgres password=postgres")
-else:
+if 'FLASK_ENV' in os.environ and os.environ['FLASK_ENV'] == 'development':
     conn = psycopg2.connect(f"host=localhost port=5432 dbname=WeekendsDoWhat user=postgres password={os.environ['postgres_pwd']}")
+else:
+    conn = psycopg2.connect(r"host=weekendsdowhat-instance-1.crixlxpvi0ep.ap-southeast-1.rds.amazonaws.com port=5432 dbname=postgres user=postgres password=postgres")
 # Creating a cursor object using the cursor()
 cur = conn.cursor()
 

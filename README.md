@@ -56,7 +56,7 @@ psql WeekendsDoWhat -U postgres
 
 
 ### Create table and push database to RDS
-1. Change the psycopg2.connect in postgresql_setup.py with the endpoint of the previously created AWS RRS: 
+1. Change the **final** psycopg2.connect in postgresql_setup.py with the endpoint of the previously created AWS RRS: 
 ```
 conn = psycopg2.connect(r"host=weekendsdowhat-instance-1.crixlxpvi0ep.ap-southeast-1.rds.amazonaws.com port=5432 dbname=postgres user=postgres password=postgres")
 conn = psycopg2.connect(r"host=[RDS_endpoint] port=5432 dbname=postgres user=postgres password=postgres")
@@ -74,7 +74,7 @@ python postgresql_setup.py
 Follow this [link](https://github.com/aws/aws-elastic-beanstalk-cli-setup) for installation.
 
 ### Edit app.py
-Inside ./Backend folder, change the application.config line, eg:
+Inside ./Backend folder, change the **final** application.config line, eg:
 ```
 application.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@mydbcluster.cluster-crixlxpvi0ep.ap-southeast-1.rds.amazonaws.com:5432/WeekendsDoWhat'
 application.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://[rds_username]:[rds_password]@[rds_endpoint]:5432/[rds_db_name]'
