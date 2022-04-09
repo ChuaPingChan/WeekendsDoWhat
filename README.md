@@ -72,7 +72,7 @@ python postgresql_setup.py
 Follow this [link](https://github.com/aws/aws-elastic-beanstalk-cli-setup) for installation.
 
 ### Edit app.py
-In ./Backend/application.py, change the **final** application.config line by providing the endpoint of the previously created AWS RDS:
+Change the current working directory to the ./Backend folder, change the **final** application.config line in application.py by providing the endpoint of the previously created AWS RDS:
 ```
 application.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@mydbcluster.cluster-crixlxpvi0ep.ap-southeast-1.rds.amazonaws.com:5432/WeekendsDoWhat'
 application.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://[rds_username]:[rds_password]@[rds_endpoint]:5432/[rds_db_name]'
@@ -109,7 +109,7 @@ api_endpoint: "[URL of Flask's EBS]"
 ```
 
 ### Create and launch EBS using command line
-Inside the ./Frontend folder, create a sample application first.
+Change the current working directory to the ./Frontend folder, create a sample application first.
 ```
 eb init --platform node.js --region ap-southeast-1
 ```
