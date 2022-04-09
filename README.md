@@ -72,7 +72,7 @@ python postgresql_setup.py
 Follow this [link](https://github.com/aws/aws-elastic-beanstalk-cli-setup) for installation.
 
 ### Edit app.py
-In application.py, change the **final** application.config line by providing the endpoint of the previously created AWS RDS:
+In ./Backend/application.py, change the **final** application.config line by providing the endpoint of the previously created AWS RDS:
 ```
 application.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@mydbcluster.cluster-crixlxpvi0ep.ap-southeast-1.rds.amazonaws.com:5432/WeekendsDoWhat'
 application.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://[rds_username]:[rds_password]@[rds_endpoint]:5432/[rds_db_name]'
