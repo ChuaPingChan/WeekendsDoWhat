@@ -29,7 +29,7 @@
     | postgres_pwd              | PostgreSQL database password  | PostgreSQL password on our Ubuntu VM is "password" |
 1. To run the server
     ```
-    flask run --host=0.0.0.0 --port=5050
+    cd Backend && flask run --host=0.0.0.0 --port=5050
     ```
     To run the frontend
     ```
@@ -77,6 +77,7 @@
 1. If this is the first time you are setting up the database, populate the newly create database following the steps in [docs/db-setup.md](docs/db-setup.md).
 1. Run the Flask backend
     ```
+    cd Backend
     flask run --host=0.0.0.0 --port=<port_num>
     ```
 

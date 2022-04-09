@@ -1,6 +1,6 @@
 # Excel data files
 *.xlsx
-data/images
+Backend/data/images
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
